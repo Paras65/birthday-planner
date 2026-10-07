@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgDadi" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9a9e"/>
+      <stop offset="100%" stop-color="#fecfef"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="95" fill="url(#bgDadi)"/>
+  <!-- Face -->
+  <circle cx="100" cy="98" r="48" fill="#ffd8b3"/>
+  <!-- Grey Hair Bun -->
+  <circle cx="100" cy="45" r="24" fill="#94a3b8"/>
+  <path d="M55,95 Q52,55 100,55 Q148,55 145,95 Q130,70 100,70 Q70,70 55,95 Z" fill="#94a3b8"/>
+  <!-- Specs -->
+  <circle cx="82" cy="92" r="14" fill="none" stroke="#e11d48" stroke-width="3"/>
+  <circle cx="118" cy="92" r="14" fill="none" stroke="#e11d48" stroke-width="3"/>
+  <line x1="96" y1="92" x2="104" y2="92" stroke="#e11d48" stroke-width="3"/>
+  <!-- Eyes -->
+  <circle cx="82" cy="92" r="4" fill="#334155"/>
+  <circle cx="118" cy="92" r="4" fill="#334155"/>
+  <!-- Bindi -->
+  <circle cx="100" cy="80" r="4" fill="#dc2626"/>
+  <!-- Sweet Smile -->
+  <path d="M88,120 Q100,132 112,120" stroke="#be123c" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Rosy Cheeks -->
+  <circle cx="70" cy="108" r="8" fill="#fda4af" opacity="0.6"/>
+  <circle cx="130" cy="108" r="8" fill="#fda4af" opacity="0.6"/>
+  <!-- Golden Crown / Tiara -->
+  <polygon points="75,55 85,35 100,48 115,35 125,55" fill="#f59e0b"/>
+  <circle cx="100" cy="48" r="3" fill="#dc2626"/>
+  <!-- Text Badge -->
+  <rect x="35" y="155" width="130" height="32" rx="16" fill="#ffffff" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.2))"/>
+  <text x="100" y="176" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14" fill="#be123c">👵 Sunita Dadi</text>
+</svg>
+

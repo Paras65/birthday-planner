@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToonWish - Kid's Birthday Cartoon Showtime & Family Wish Wall</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <style>
+      .home-shell {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 40px 20px 80px;
+      }
+      .hero-header {
+        text-align: center;
+        margin-bottom: 35px;
+      }
+      .hero-badge {
+        display: inline-block;
+        background: #ffffff;
+        color: var(--primary);
+        font-weight: 800;
+        padding: 6px 18px;
+        border-radius: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+      }
+      .hero-title {
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        color: #1e1b4b;
+        margin-bottom: 12px;
+      }
+      .hero-desc {
+        font-size: 1.2rem;
+        color: #475569;
+        font-weight: 600;
+        max-width: 620px;
+        margin: 0 auto;
+      }
+      .setup-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-top: 25px;
+      }
+      @media (max-width: 700px) {
+        .setup-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .links-box {
+        margin-top: 30px;
+        background: #f8fafc;
+        border-radius: var(--radius-md);
+        padding: 20px;
+        border: 2px dashed #cbd5e1;
+      }
+      .link-item {
+        margin-bottom: 18px;
+      }
+      .link-title {
+        font-family: 'Fredoka', cursive;
+        font-size: 1.15rem;
+        color: #1e293b;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .link-input-row {
+        display: flex;
+        gap: 8px;
+      }
+      .copy-btn {
+        padding: 10px 18px;
+        font-size: 0.95rem;
+      }
+      .sample-demo-card {
+        margin-top: 35px;
+        background: linear-gradient(135deg, #fdf2f8, #f5f3ff);
+        border: 3px solid #fbcfe8;
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .demo-left h3 {
+        font-size: 1.4rem;
+        color: #831843;
+      }
+      .demo-left p {
+        color: #64748b;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="home-shell">
+      <header class="hero-header">
+        <span class="hero-badge">🎪 Magical Family Birthday Experience</span>
+        <h1 class="hero-title">Cartoon Wishes Showtime! 🎂</h1>
+        <p class="hero-desc">
+          Family members apni selfie upload karenge aur sweet wish likhenge — Birthday wale din cute cartoons unki photo pakad ke unke messages aawaz mein bolenge!
+        </p>
+      </header>
+
+      <main class="app-card">
+        <h2>🎉 Plan a Birthday Party Room</h2>
+        <p style="color: #64748b; font-weight: 600; margin: 6px 0 20px;">
+          Niche bacche ki details daalein aur shareable WhatsApp invite link payein:
+        </p>
+
+        <form id="createPartyForm">
+          <div class="setup-grid">
+            <div>
+              <label class="form-label" for="kidName">Bacche Ka Naam (Kid's Name)</label>
+              <input type="text" id="kidName" class="form-input" placeholder="e.g. Aarav, Myra, Kabir" required />
+            </div>
+
+            <div>
+              <label class="form-label" for="kidAge">Age (Kitne saal ke ho rahe hain)</label>
+              <input type="number" id="kidAge" class="form-input" min="1" max="18" placeholder="e.g. 5" required />
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; text-align: center;">
+            <button type="submit" class="btn btn-primary btn-large pulsing" style="padding: 16px 36px; font-size: 1.25rem;">
+              🚀 Create Party Room & Generate Links!
+            </button>
+          </div>
+        </form>
+
+        <div id="linksBox" class="links-box" style="display: none;">
+          <h3 style="color: #0f172a; margin-bottom: 14px;">✨ Aapke Celebration Links Ready Hain:</h3>
+
+          <!-- Link 1: WhatsApp Invite for Family -->
+          <div class="link-item">
+            <div class="link-title">
+              <span>📲 1. Family Members Invite Link (Share on WhatsApp)</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 8px;">
+              Yeh link relatives, dadi, chacha, bua ko WhatsApp par bhejein taaki woh apni selfie & wish submit kar sakein:
+            </p>
+            <div class="link-input-row">
+              <input type="text" id="familyLinkInput" class="form-input" readonly />
+              <button id="copyFamilyLinkBtn" class="btn btn-secondary copy-btn">📋 Copy</button>
+              <a id="whatsappShareBtn" target="_blank" class="btn btn-whatsapp copy-btn">💬 WhatsApp Share</a>
+            </div>
+          </div>
+
+          <!-- Link 2: Kid's Showtime Screen -->
+          <div class="link-item" style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 18px;">
+            <div class="link-title">
+              <span>🎪 2. Kid's Grand Showtime Screen (Birthday Wale Din)</span>
+            </div>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 8px;">
+              Cake cutting, candle blowing, aur cartoon presentation dekhne ke liye:
+            </p>
+            <div class="link-input-row">
+              <input type="text" id="showtimeLinkInput" class="form-input" readonly />
+              <a id="openShowtimeLinkBtn" class="btn btn-accent copy-btn">🎂 Open Showtime!</a>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Active Parties / Kids Management Section -->
+      <section class="app-card" style="margin-top: 35px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <h2 style="font-size: 1.6rem; color: #1e1b4b; margin: 0;">📋 Saved Birthday Rooms & Kids</h2>
+          <span style="font-size: 0.85rem; color: #64748b; font-weight: 700;">Har bacche ka alag room aur alag link rehta hai!</span>
+        </div>
+        
+        <div id="partiesListContainer" style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Loaded dynamically -->
+          <p style="color: #64748b;">Loading saved parties...</p>
+        </div>
+      </section>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/audio.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('createPartyForm');
+        const linksBox = document.getElementById('linksBox');
+        const familyLinkInput = document.getElementById('familyLinkInput');
+        const showtimeLinkInput = document.getElementById('showtimeLinkInput');
+        const copyFamilyLinkBtn = document.getElementById('copyFamilyLinkBtn');
+        const whatsappShareBtn = document.getElementById('whatsappShareBtn');
+        const openShowtimeLinkBtn = document.getElementById('openShowtimeLinkBtn');
+        const partiesListContainer = document.getElementById('partiesListContainer');
+
+        async function loadParties() {
+          try {
+            const res = await fetch('/api/parties');
+            const data = await res.json();
+            const parties = data.parties || [];
+
+            if (parties.length === 0) {
+              partiesListContainer.innerHTML = '<p style="color: #64748b;">Abhi koi party room nahi hai. Upar form se naya room banayein!</p>';
+              return;
+            }
+
+            partiesListContainer.innerHTML = '';
+            parties.forEach((p) => {
+              const card = document.createElement('div');
+              card.style.cssText = 'background: #ffffff; border: 2px solid #e2e8f0; border-radius: 16px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; box-shadow: 0 4px 10px rgba(0,0,0,0.04);';
+
+              const origin = window.location.origin;
+              const wishUrl = `${origin}/wish?party=${p.id}`;
+              const showtimeUrl = `${origin}/showtime?party=${p.id}`;
+              const shareMsg = `🎂 Namaste! Humare pyare ${p.kidName} ka ${p.kidAge}th Birthday aa raha hai! 🎉\nKripya is magical link par apni selfie upload karein aur sweet wish bhejein. Cute cartoons aapki photo ke saath wish bolenge! 🎈👇`;
+              const whatsappUrl = AppUtils.getWhatsAppShareUrl(shareMsg, wishUrl);
+
+              card.innerHTML = `
+                <div>
+                  <h3 style="margin: 0; font-size: 1.25rem; color: #1e293b;">
+                    🎂 ${p.kidName} <span style="font-size: 0.9rem; color: #ff4d94; background: #fff0f6; padding: 2px 10px; border-radius: 12px; font-weight: 800;">${p.kidAge}th Birthday</span>
+                  </h3>
+                  <p style="margin: 4px 0 0; font-size: 0.9rem; color: #64748b; font-weight: 600;">
+                    🎈 <strong>${p.wishCount || 0}</strong> family wishes received
+                  </p>
+                </div>
+
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                  <a href="${whatsappUrl}" target="_blank" class="btn btn-whatsapp" style="padding: 6px 14px; font-size: 0.85rem;">
+                    💬 WhatsApp Share
+                  </a>
+                  <button class="btn btn-secondary share-btn" data-url="${wishUrl}" data-name="${p.kidName}" data-text="${shareMsg}" style="padding: 6px 12px; font-size: 0.85rem;">
+                    📲 Share Link
+                  </button>
+                  <a href="${showtimeUrl}" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem;">
+                    🎪 Showtime
+                  </a>
+                  <button class="btn btn-secondary clear-wishes-btn" data-id="${p.id}" data-name="${p.kidName}" style="padding: 6px 12px; font-size: 0.85rem; color: #d97706; border-color: #fde68a;">
+                    🧹 Clear (${p.wishCount || 0})
+                  </button>
+                  ${
+                    p.id !== 'demo-kid'
+                      ? `<button class="btn btn-secondary delete-party-btn" data-id="${p.id}" data-name="${p.kidName}" style="padding: 6px 12px; font-size: 0.85rem; color: #dc2626; border-color: #fca5a5;">
+                          🗑️ Delete
+                        </button>`
+                      : ''
+                  }
+                </div>
+              `;
+
+              partiesListContainer.appendChild(card);
+            });
+
+            // Bind actions
+            document.querySelectorAll('.share-btn').forEach((btn) => {
+              btn.onclick = async () => {
+                const url = btn.dataset.url;
+                const name = btn.dataset.name;
+                const text = btn.dataset.text;
+                if (navigator.share) {
+                  try {
+                    await navigator.share({ title: `${name}'s Birthday Wish`, text, url });
+                    return;
+                  } catch (e) {}
+                }
+                navigator.clipboard.writeText(url);
+                SoundFx.click();
+                AppUtils.showToast('Wish link copied to clipboard! 📋');
+              };
+            });
+
+            document.querySelectorAll('.clear-wishes-btn').forEach((btn) => {
+              btn.onclick = async () => {
+                const id = btn.dataset.id;
+                const name = btn.dataset.name;
+                if (!confirm(`Kya aap sach mein ${name} ke sabhi wishes clear (empty) karna chahte hain?`)) return;
+
+                SoundFx.boing();
+                const r = await fetch(`/api/parties/${id}/clear`, { method: 'POST' });
+                const d = await r.json();
+                if (d.success) {
+                  AppUtils.showToast(`${name} ke saare wishes clear ho gaye! 🧹`);
+                  loadParties();
+                }
+              };
+            });
+
+            document.querySelectorAll('.delete-party-btn').forEach((btn) => {
+              btn.onclick = async () => {
+                const id = btn.dataset.id;
+                const name = btn.dataset.name;
+                if (!confirm(`Kya aap sach mein ${name} ka room poora delete karna chahte hain?`)) return;
+
+                SoundFx.click();
+                const r = await fetch(`/api/parties/${id}`, { method: 'DELETE' });
+                const d = await r.json();
+                if (d.success) {
+                  AppUtils.showToast(`${name} ka room delete ho gaya! 🗑️`);
+                  loadParties();
+                }
+              };
+            });
+          } catch (e) {
+            console.warn('Failed to load parties list', e);
+          }
+        }
+
+        loadParties();
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          SoundFx.click();
+
+          const kidName = document.getElementById('kidName').value.trim();
+          const kidAge = document.getElementById('kidAge').value;
+
+          try {
+            const res = await fetch('/api/parties', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ kidName, kidAge }),
+            });
+            const data = await res.json();
+
+            if (data.success) {
+              SoundFx.cheer();
+              AppUtils.showerConfetti();
+
+              const partyId = data.party.id;
+              const origin = window.location.origin;
+              const familyUrl = `${origin}/wish?party=${partyId}`;
+              const showtimeUrl = `${origin}/showtime?party=${partyId}`;
+
+              familyLinkInput.value = familyUrl;
+              showtimeLinkInput.value = showtimeUrl;
+
+              openShowtimeLinkBtn.href = showtimeUrl;
+
+              const whatsappText = `🎂 Namaste! Humare pyare ${kidName} ka ${kidAge}th Birthday aa raha hai! 🎉\nKripya is magical link par apni selfie upload karein aur sweet wish likhein. Birthday wale din cute cartoons aapki photo pakad ke aapka wish bolenge! 🎈👇`;
+              whatsappShareBtn.href = AppUtils.getWhatsAppShareUrl(whatsappText, familyUrl);
+
+              linksBox.style.display = 'block';
+              linksBox.scrollIntoView({ behavior: 'smooth' });
+              AppUtils.showToast('🎉 Party room created! Share the link on WhatsApp!');
+              loadParties();
+            }
+          } catch (err) {
+            console.error(err);
+            AppUtils.showToast('Failed to create party room');
+          }
+        });
+
+        copyFamilyLinkBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText(familyLinkInput.value);
+          SoundFx.boing();
+          AppUtils.showToast('Link copied to clipboard! 📋');
+        });
+      });
+    </script>
+  </body>
+</html>
+

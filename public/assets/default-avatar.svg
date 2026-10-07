@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgDef" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd166"/>
+      <stop offset="100%" stop-color="#ff9f43"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="95" fill="url(#bgDef)"/>
+  <!-- Smiley Face -->
+  <circle cx="100" cy="98" r="48" fill="#ffffff"/>
+  <ellipse cx="82" cy="90" rx="6" ry="8" fill="#2d2340"/>
+  <ellipse cx="118" cy="90" rx="6" ry="8" fill="#2d2340"/>
+  <circle cx="80" cy="88" r="2" fill="#ffffff"/>
+  <circle cx="116" cy="88" r="2" fill="#ffffff"/>
+  <path d="M85,115 Q100,132 115,115" stroke="#f03e3e" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <circle cx="70" cy="102" r="6" fill="#ff8787" opacity="0.7"/>
+  <circle cx="130" cy="102" r="6" fill="#ff8787" opacity="0.7"/>
+  <!-- Party Hat -->
+  <polygon points="100,25 82,60 118,60" fill="#7950f2"/>
+  <circle cx="100" cy="22" r="6" fill="#ffd43b"/>
+  <!-- Text Badge -->
+  <rect x="35" y="155" width="130" height="32" rx="16" fill="#ffffff" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.2))"/>
+  <text x="100" y="176" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14" fill="#f08c00">💖 Family Member</text>
+</svg>
+

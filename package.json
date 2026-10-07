@@ -1,0 +1,23 @@
+{
+  "name": "kidbirthday",
+  "version": "1.0.0",
+  "description": "Magical Kid's Birthday Cartoon Showtime & Family Wish Wall",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "birthday",
+    "kids",
+    "cartoon",
+    "speech-synthesis",
+    "family-wishes",
+    "celebration"
+  ],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}

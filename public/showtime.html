@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grand Birthday Showtime | ToonWish</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/showtime.css" />
+  </head>
+  <body>
+    <div class="showtime-page-shell">
+      <!-- Topbar Navigation -->
+      <header class="showtime-topbar">
+        <div class="showtime-brand">
+          <span>🎂</span>
+          <span><span id="kidNameHeader">Aarav</span>'s Grand Celebration</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <a id="showtimeWhatsappShareBtn" target="_blank" class="btn btn-whatsapp" style="font-size: 0.85rem; padding: 6px 14px;">
+            💬 WhatsApp Invite
+          </a>
+          <button id="showtimeShareLinkBtn" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 12px;">
+            📲 Share Link
+          </button>
+          <select id="stageVoiceSelect" class="form-input" style="padding: 6px 10px; font-size: 0.82rem; width: auto; max-width: 200px; border-radius: 20px; background: #ffffff; border: 2px solid #fbcfe8;">
+            <option value="">🎙️ Auto Cartoon Voice</option>
+          </select>
+          <button id="openScrapbookBtn" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+            📖 Scrapbook
+          </button>
+        </div>
+      </header>
+
+      <!-- =========================================
+           ACT 1: CAKE & CANDLE BLOW SECTION
+           ========================================= -->
+      <section id="cakeSection" class="cake-section">
+        <h1 class="celebration-title">Happy Birthday, <span id="stageKidName">Aarav</span>! 🎈</h1>
+        <p class="celebration-subtitle">
+          Aaj aap <span id="stageAge">5th</span> saal ke ho gaye! Pehle cake ki candles blow karein:
+        </p>
+
+        <!-- 3D Layered Cake -->
+        <div class="cake-container">
+          <!-- Candles Row -->
+          <div id="candlesContainer" class="candles-row">
+            <!-- Candles populated dynamically according to age -->
+          </div>
+
+          <!-- Top Tier -->
+          <div class="cake-tier-top"></div>
+          <!-- Bottom Tier -->
+          <div class="cake-tier-bottom"></div>
+          <!-- Cake Plate -->
+          <div class="cake-plate"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="cake-actions">
+          <button id="blowCandlesBtn" class="btn btn-primary pulsing" style="padding: 16px 36px; font-size: 1.3rem;">
+            🌬️ Tap to Blow Candles!
+          </button>
+          <button id="micBlowBtn" class="btn btn-secondary" style="font-size: 1rem;">
+            🎙️ Blow into Phone Mic
+          </button>
+          <button id="startShowBtn" class="btn btn-primary" style="display: none; padding: 16px 40px; font-size: 1.4rem; background: #7209b7;">
+            🎪 Start Cartoon Showtime! 🍿
+          </button>
+        </div>
+      </section>
+
+      <!-- =========================================
+           ACT 2 & 3: GRAND THEATER STAGE
+           ========================================= -->
+      <section id="stageSection" class="stage-section">
+        <!-- Velvet Theater Curtains -->
+        <div id="curtainLeft" class="curtain-panel curtain-left"></div>
+        <div id="curtainRight" class="curtain-panel curtain-right"></div>
+        <div class="curtain-valance">🎪 TOONWISH CELEBRATION STAGE 🎪</div>
+
+        <div class="stage-theater-frame">
+          <!-- Stage Spotlight Beam -->
+          <div class="spotlight-beam"></div>
+
+          <!-- Stage Core Grid: Cartoon + Wish Card -->
+          <div class="stage-show-grid">
+            <!-- Cartoon Character on Stage -->
+            <div class="stage-performer-box">
+              <div id="cartoonAvatarStage" class="stage-avatar stage-bounce">
+                <!-- SVG dynamically injected -->
+              </div>
+              <div id="cartoonNameBadge" class="toon-badge">Mimi The Kitty</div>
+            </div>
+
+            <!-- Family Member Wish Card & Speech Bubble -->
+            <div class="stage-wish-card">
+              <div class="selfie-and-sender">
+                <div class="selfie-frame-outer">
+                  <img id="selfiePhotoFrame" src="/assets/default-avatar.svg" alt="Family Selfie" />
+                </div>
+                <div class="sender-info">
+                  <div id="senderBadge">
+                    <strong>Rohan Chacha</strong> <span class="relation-pill">Chacha</span>
+                  </div>
+                  <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">Sent with love 💖</div>
+                </div>
+              </div>
+
+              <!-- Animated Speech Bubble -->
+              <div id="speechBubble" class="speech-bubble">
+                <div class="speech-quote">“Happy Birthday champ!”</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage Bottom Controls & Kid Reactions -->
+          <div class="stage-bottom-bar">
+            <!-- Wish Counter Badge -->
+            <div id="wishCounterBadge" class="wish-counter-badge">Wish 1 of 3</div>
+
+            <!-- Kid's Live Reaction Buttons -->
+            <div class="kid-reactions-bar">
+              <button id="reactHugBtn" class="reaction-btn" title="Send Tight Hug">
+                <span>🤗</span> Hug <span class="reaction-count">0</span>
+              </button>
+              <button id="reactKissBtn" class="reaction-btn" title="Send Flying Kiss">
+                <span>😘</span> Kiss <span class="reaction-count">0</span>
+              </button>
+              <button id="reactHighfiveBtn" class="reaction-btn" title="High Five">
+                <span>✋</span> High-Five <span class="reaction-count">0</span>
+              </button>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div style="display: flex; gap: 8px;">
+              <button id="prevWishBtn" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.95rem;">
+                ⬅️ Prev
+              </button>
+              <button id="replayWishBtn" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.95rem;">
+                🔄 Replay
+              </button>
+              <button id="nextWishBtn" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.95rem;">
+                Next ➡️
+              </button>
+              <button id="finaleBtn" class="btn btn-accent" style="padding: 10px 18px; font-size: 0.95rem;">
+                🕺 Dance Party!
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================
+           ACT 4: GRAND FINALE DANCE PARTY
+           ========================================= -->
+      <section id="finaleSection" class="finale-section">
+        <!-- Floating Balloons Container (Click balloons to POP them) -->
+        <div id="floatingBalloonsContainer" class="floating-balloons-container"></div>
+
+        <h1 class="finale-title">🎉 ALL CARTOONS DANCE PARTY! 🕺💃</h1>
+        <p class="finale-subtitle">
+          Saare family members aapko dher saara pyaar bhej rahe hain! (Tap balloons to POP them! 🎈)
+        </p>
+
+        <!-- All Cartoons Dancing Row -->
+        <div id="danceCrew" class="dance-crew-row">
+          <!-- Populated by JS -->
+        </div>
+
+        <div style="display: flex; gap: 14px; justify-content: center; position: relative; z-index: 10; margin-top: 25px; flex-wrap: wrap;">
+          <button id="backToStageBtn" class="btn btn-secondary" style="font-size: 1rem;">
+            🎪 Back to Wishes Stage
+          </button>
+          <button onclick="document.getElementById('openScrapbookBtn').click()" class="btn btn-accent" style="font-size: 1.05rem;">
+            📖 View Memory Scrapbook Album
+          </button>
+          <a href="/" class="btn btn-secondary" style="font-size: 1rem;">
+            🏠 Home
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================================
+         ACT 5: MEMORY SCRAPBOOK MODAL
+         ========================================= -->
+    <div id="scrapbookModal" class="modal-overlay">
+      <div class="modal-card" style="max-width: 880px; max-height: 90vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 14px;">
+          <h2 style="margin: 0; font-size: 1.6rem; color: var(--primary);">📖 Family Birthday Scrapbook Album</h2>
+          <div style="display: flex; gap: 10px;">
+            <button id="printScrapbookBtn" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.95rem;">
+              🖨️ Print / Save PDF
+            </button>
+            <button id="closeScrapbookBtn" class="btn btn-secondary" style="padding: 8px 14px; font-size: 0.95rem;">
+              ✖️ Close
+            </button>
+          </div>
+        </div>
+
+        <div id="scrapbookGrid" class="scrapbook-grid">
+          <!-- Populated dynamically with Polaroid style cards -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/common.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/characters.js"></script>
+    <script src="/js/showtime.js"></script>
+  </body>
+</html>
+

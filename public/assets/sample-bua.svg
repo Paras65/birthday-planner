@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgBua" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a8edea"/>
+      <stop offset="100%" stop-color="#fed6e3"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="95" fill="url(#bgBua)"/>
+  <!-- Face -->
+  <circle cx="100" cy="98" r="48" fill="#ffe0bd"/>
+  <!-- Cute Hair with Ponytails -->
+  <path d="M52,95 C45,55 90,45 100,45 C110,45 155,55 148,95 C130,68 115,62 100,62 C85,62 70,68 52,95 Z" fill="#3b1d11"/>
+  <!-- Cute Pink Hair Bow -->
+  <path d="M75,40 C65,30 55,50 75,45 C75,45 95,50 85,30 Z" fill="#ff4d94"/>
+  <circle cx="80" cy="42" r="5" fill="#ffd166"/>
+  <!-- Sparkly Eyes -->
+  <ellipse cx="82" cy="92" rx="6" ry="8" fill="#1e293b"/>
+  <ellipse cx="118" cy="92" rx="6" ry="8" fill="#1e293b"/>
+  <circle cx="80" cy="89" r="2.5" fill="#ffffff"/>
+  <circle cx="116" cy="89" r="2.5" fill="#ffffff"/>
+  <!-- Cute Wink / Smile -->
+  <path d="M88,118 Q100,132 112,118" stroke="#db2777" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Rosy Blush -->
+  <circle cx="72" cy="104" r="7" fill="#f472b6" opacity="0.6"/>
+  <circle cx="128" cy="104" r="7" fill="#f472b6" opacity="0.6"/>
+  <!-- Text Badge -->
+  <rect x="35" y="155" width="130" height="32" rx="16" fill="#ffffff" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.2))"/>
+  <text x="100" y="176" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14" fill="#db2777">🎀 Pooja Bua</text>
+</svg>
+

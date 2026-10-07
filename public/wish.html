@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send Birthday Wish | ToonWish</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/wish.css" />
+  </head>
+  <body>
+    <div class="wish-page-shell">
+      <header class="portal-header">
+        <span class="eyebrow">🎈 Family Birthday Wishes Club</span>
+        <h1><span id="partyKidName">Aarav</span> Ki <span id="partyAge">5th</span> Birthday! 🎂</h1>
+        <p>Apni selfie upload karein, cartoon stickers lagayein, aur apna sweet wish bhejein!</p>
+      </header>
+
+      <main class="app-card">
+        <form id="wishForm">
+          <div class="wish-form-grid">
+            <!-- Left Column: Selfie & Sticker Decorator -->
+            <div>
+              <label class="form-label">🤳 1. Apni Selfie & Fun Stickers</label>
+              <div class="photo-workbench">
+                <div class="canvas-wrapper">
+                  <canvas id="stickerCanvas" width="400" height="400"></canvas>
+                </div>
+
+                <div class="photo-tools">
+                  <label class="tool-btn" style="cursor: pointer;">
+                    📁 Upload Photo
+                    <input type="file" id="photoInput" accept="image/*" style="display: none;" />
+                  </label>
+                  <button type="button" id="openCameraBtn" class="tool-btn">📸 Open Camera</button>
+                  <button type="button" id="removePhotoBtn" class="tool-btn" style="color: #ef4444;">❌ Remove Photo</button>
+                  <button type="button" id="clearStickersBtn" class="tool-btn" style="color: #d97706;">🧹 Clear Stickers</button>
+                </div>
+
+                <!-- Camera Container -->
+                <div id="cameraContainer" class="camera-container">
+                  <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+                  <div style="margin-top: 8px;">
+                    <button type="button" id="snapBtn" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.95rem;">
+                      ✨ Take Photo
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Sticker Palette -->
+                <div class="stickers-header">
+                  <span style="font-weight: 800; font-size: 0.9rem; color: #475569;">Stickers (Tap to add & drag to position):</span>
+                </div>
+                <div id="stickerPalette" class="sticker-palette">
+                  <!-- Dynamically rendered by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Details, Cartoon Selector, Message & Audio -->
+            <div>
+              <!-- Sender Name & Relation -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                <div class="form-group">
+                  <label class="form-label" for="senderName">Aapka Naam</label>
+                  <input type="text" id="senderName" class="form-input" placeholder="e.g. Rohan, Sunita, Pinky" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="relation">Relation / Rishta</label>
+                  <input type="text" id="relation" class="form-input" placeholder="e.g. Chacha, Dadi, Bua, Masi" />
+                </div>
+              </div>
+
+              <!-- Choose Cartoon Presenter -->
+              <div class="form-group">
+                <label class="form-label">🎭 2. Choose Cartoon Presenter</label>
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 6px;">
+                  Yeh cartoon stage par aakar aapka wish bolega:
+                </p>
+                <div id="characterGrid" class="character-grid">
+                  <!-- Rendered dynamically by JS -->
+                </div>
+
+                <!-- Voice Engine Selector -->
+                <div class="voice-picker-box" style="margin-top: 14px; background: #f8fafc; padding: 12px 16px; border-radius: 16px; border: 2px dashed #cbd5e1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <label for="voiceSelect" style="font-size: 0.9rem; font-weight: 800; color: #475569;">
+                      🎙️ Cartoon Voice Engine (Aawaz Style):
+                    </label>
+                    <span style="font-size: 0.75rem; background: #dcfce7; color: #166534; font-weight: 800; padding: 2px 8px; border-radius: 10px;">
+                      Smart Filter ✨
+                    </span>
+                  </div>
+                  <select id="voiceSelect" class="form-input" style="padding: 8px 12px; font-size: 0.9rem;">
+                    <option value="">Auto (Best Natural / Cartoon Voice)</option>
+                  </select>
+                  <p style="font-size: 0.78rem; color: #64748b; margin-top: 6px;">
+                    💡 Agar aawaz robot jaisi lage, toh yahan se <strong>Hindi (Google हिन्दी/Swara)</strong> ya <strong>Natural Female</strong> voice select karke test karein!
+                  </p>
+                </div>
+              </div>
+
+              <!-- Birthday Message Input -->
+              <div class="form-group">
+                <label class="form-label" for="messageText">💌 3. Birthday Wish Message</label>
+                <textarea id="messageText" class="form-textarea" rows="3" placeholder="Apna pyara sa message likhein..."></textarea>
+                
+                <div style="margin-top: 6px;">
+                  <span style="font-size: 0.8rem; font-weight: 800; color: #64748b;">Quick ideas:</span>
+                  <div id="quickWishesContainer" class="quick-wishes-row">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Voice Delivery Mode (Cartoon Speech vs Real Audio) -->
+              <div class="form-group">
+                <label class="form-label">🎤 4. Delivery Voice Style</label>
+                <div class="voice-type-selector">
+                  <label class="radio-pill">
+                    <input type="radio" name="voiceType" value="tts" checked />
+                    <span>Cartoon Animated Voice 🗣️</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="voiceType" value="audio" />
+                    <span>Record Real Voice 🎙️</span>
+                  </label>
+                </div>
+
+                <!-- Test Cartoon Voice Button -->
+                <div style="margin-top: 10px;">
+                  <button type="button" id="testVoiceBtn" class="btn btn-secondary" style="font-size: 0.95rem; padding: 10px 18px;">
+                    🔊 Test Cartoon Voice
+                  </button>
+                </div>
+
+                <!-- Real Audio Recording UI -->
+                <div id="audioRecorderSection" class="audio-recorder-box">
+                  <p style="font-weight: 700; color: #1e3a8a; margin-bottom: 8px;">
+                    Apni aawaz mein gaana ya wish record karein (max 30s):
+                  </p>
+                  <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                    <button type="button" id="recordAudioBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.95rem;">
+                      🔴 Start Recording
+                    </button>
+                    <button type="button" id="stopAudioBtn" class="btn btn-secondary" style="display: none; padding: 10px 18px; font-size: 0.95rem; color: #ef4444;">
+                      ⏹️ Stop Recording
+                    </button>
+                    <span id="recordingTimer" style="display: none; font-weight: 800; color: #ef4444;">
+                      <span class="record-pulse-dot"></span>0:00
+                    </span>
+                  </div>
+                  <audio id="audioPreview" controls style="display: none; margin: 12px auto 0; width: 100%; max-width: 320px;"></audio>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div style="margin-top: 24px;">
+                <button type="submit" id="submitBtn" class="btn btn-primary pulsing" style="width: 100%; padding: 16px; font-size: 1.25rem;">
+                  🚀 Submit My Birthday Wish!
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-icon">🎉</div>
+        <h2>Aapki Wish Submit Ho Gayi! 🎂</h2>
+        <p>Aapka decorated selfie aur cute cartoon presentation birthday showtime mein shamil ho chuka hai!</p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a id="modalWhatsappShareBtn" target="_blank" class="btn btn-whatsapp" style="font-size: 1.05rem;">
+            💬 Share on WhatsApp (Invite Other Relatives)
+          </a>
+          <button id="modalCopyLinkBtn" class="btn btn-secondary" style="font-size: 0.95rem;">
+            📋 Copy Wish Link
+          </button>
+          <button id="viewShowtimeBtn" class="btn btn-primary" style="font-size: 1.05rem;">
+            🎪 View Grand Showtime Screen
+          </button>
+          <a href="/" class="btn btn-secondary" style="font-size: 0.95rem;">
+            🏠 Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/common.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/characters.js"></script>
+    <script src="/js/stickers.js"></script>
+    <script src="/js/wish.js"></script>
+  </body>
+</html>
+
