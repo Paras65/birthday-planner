@@ -372,13 +372,39 @@ document.addEventListener('DOMContentLoaded', () => {
       CharacterManager.setUserVoice(autoSelectedURI);
     }
 
-    voices.forEach((v) => {
+    // Filter only relevant Hindi, Indian English, and top Natural voices
+    const relevantVoices = voices.filter((v) => {
+      const lang = (v.lang || '').toLowerCase();
+      const name = (v.name || '').toLowerCase();
+      // Keep Hindi
+      if (lang.startsWith('hi') || name.includes('hindi')) return true;
+      // Keep Indian English / Indian regional
+      if (lang.includes('in') || name.includes('india') || name.includes('neerja') || name.includes('prabhat')) return true;
+      // Keep top English natural voices
+      if (lang.startsWith('en') && (name.includes('natural') || name.includes('google') || name.includes('online') || name.includes('zira') || name.includes('david'))) return true;
+      return false;
+    });
+
+    const displayVoices = relevantVoices.length > 0 ? relevantVoices : voices.slice(0, 5);
+
+    // Sort Hindi first, then Indian English, then other natural
+    displayVoices.sort((a, b) => {
+      const aIsHindi = (a.lang || '').startsWith('hi') || (a.name || '').toLowerCase().includes('hindi');
+      const bIsHindi = (b.lang || '').startsWith('hi') || (b.name || '').toLowerCase().includes('hindi');
+      if (aIsHindi && !bIsHindi) return -1;
+      if (!aIsHindi && bIsHindi) return 1;
+      return 0;
+    });
+
+    displayVoices.forEach((v) => {
       const opt = document.createElement('option');
       opt.value = v.voiceURI;
-      const isHindi = v.lang.startsWith('hi') || v.lang.includes('IN');
-      const isNatural = v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Online');
+      const isHindi = (v.lang || '').startsWith('hi') || (v.name || '').toLowerCase().includes('hindi');
+      const isIndian = (v.lang || '').includes('IN') || (v.name || '').toLowerCase().includes('india');
+      const isNatural = (v.name || '').toLowerCase().includes('natural') || (v.name || '').toLowerCase().includes('google');
       const isSelected = v.voiceURI === autoSelectedURI;
-      opt.textContent = `${v.name} (${v.lang})${isNatural ? ' ⭐ Natural' : ''}${isHindi ? ' 🇮🇳 Hindi' : ''}${isSelected ? ' (Auto Selected ✅)' : ''}`;
+      const tag = isHindi ? ' 🇮🇳 Hindi' : isIndian ? ' 🇮🇳 Indian English' : isNatural ? ' ⭐ Natural' : '';
+      opt.textContent = `${v.name}${tag}${isSelected ? ' (Auto Selected ✅)' : ''}`;
       if (isSelected) opt.selected = true;
       voiceSelect.appendChild(opt);
     });
