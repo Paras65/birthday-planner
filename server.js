@@ -3,6 +3,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const googleTTS = require('google-tts-api');
 
 const app = express();
 const PORT = process.env.PORT || 30001;
@@ -210,6 +211,37 @@ app.post('/api/cleanup-uploads', (req, res) => {
   }
 
   res.json({ success: true, deletedCount });
+});
+
+// 2e. Free Google Cartoon TTS Audio Generator
+app.get('/api/tts', async (req, res) => {
+  try {
+    const text = (req.query.text || '').trim();
+    const lang = req.query.lang || 'hi';
+    if (!text) {
+      return res.status(400).json({ error: 'Text parameter is required' });
+    }
+
+    const safeText = text.substring(0, 350);
+    const parts = await googleTTS.getAllAudioBase64(safeText, {
+      lang: lang === 'en' ? 'en' : 'hi',
+      slow: false,
+      host: 'https://translate.google.com',
+      timeout: 8000,
+    });
+
+    const buffer = Buffer.concat(parts.map((p) => Buffer.from(p.base64, 'base64')));
+
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Length': buffer.length,
+      'Cache-Control': 'public, max-age=86400',
+    });
+    res.send(buffer);
+  } catch (err) {
+    console.error('TTS Generation error:', err.message);
+    res.status(500).json({ error: 'TTS audio generation failed' });
+  }
 });
 
 // 3. Submit a family member's wish

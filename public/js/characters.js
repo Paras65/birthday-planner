@@ -325,30 +325,15 @@ const CharacterManager = (() => {
     return cachedVoices[0];
   }
 
-  // Speak with character
-  function speak(characterId, text, onMouthToggle, onComplete, senderName = 'Family') {
-    stopSpeaking();
+  let currentAudio = null;
 
-    const char = get(characterId);
-
-    // Play signature cartoon SoundFx sound before speech
-    if (window.SoundFx && char.soundFx && typeof SoundFx[char.soundFx] === 'function') {
-      SoundFx[char.soundFx]();
-    }
-
+  function fallbackWebSpeech(char, speechText, onMouthToggle, onComplete) {
     if (!('speechSynthesis' in window)) {
-      console.warn('Speech synthesis not supported in this browser.');
+      cleanupMouth(onMouthToggle);
       if (onComplete) onComplete();
       return;
     }
-
     const synth = window.speechSynthesis;
-    const cleanText = text.replace(/<[^>]*>?/gm, '');
-
-    // Prepend fun Hindi cartoon intro so it sounds like a real show
-    const intro = char.introPrefix ? char.introPrefix(senderName) : '';
-    const speechText = `${intro}${cleanText}`;
-
     const utterance = new SpeechSynthesisUtterance(speechText);
     utterance.pitch = char.pitch || 1.1;
     utterance.rate = char.rate || 1.0;
@@ -382,6 +367,60 @@ const CharacterManager = (() => {
     synth.speak(utterance);
   }
 
+  // Speak with character
+  function speak(characterId, text, onMouthToggle, onComplete, senderName = 'Family') {
+    stopSpeaking();
+
+    const char = get(characterId);
+
+    // Play signature cartoon SoundFx sound before speech
+    if (window.SoundFx && char.soundFx && typeof SoundFx[char.soundFx] === 'function') {
+      SoundFx[char.soundFx]();
+    }
+
+    const cleanText = text.replace(/<[^>]*>?/gm, '');
+    const intro = char.introPrefix ? char.introPrefix(senderName) : '';
+    const speechText = `${intro}${cleanText}`;
+
+    // If user explicitly picked a custom browser voice from dropdown, use Web Speech API
+    if (userPreferredVoiceURI) {
+      fallbackWebSpeech(char, speechText, onMouthToggle, onComplete);
+      return;
+    }
+
+    // Default: Use Free Google Cartoon TTS Audio API with playful playback speed
+    const ttsUrl = `/api/tts?text=${encodeURIComponent(speechText)}&lang=hi`;
+    const audio = new Audio(ttsUrl);
+    audio.playbackRate = char.rate || 1.1;
+    currentAudio = audio;
+
+    let isOpen = false;
+    audio.onplay = () => {
+      mouthInterval = setInterval(() => {
+        isOpen = !isOpen;
+        if (onMouthToggle) onMouthToggle(isOpen);
+      }, 160);
+    };
+
+    audio.onended = () => {
+      cleanupMouth(onMouthToggle);
+      currentAudio = null;
+      if (onComplete) onComplete();
+    };
+
+    audio.onerror = (err) => {
+      console.warn('Server TTS failed, falling back to Web Speech API', err);
+      currentAudio = null;
+      fallbackWebSpeech(char, speechText, onMouthToggle, onComplete);
+    };
+
+    audio.play().catch((err) => {
+      console.warn('Audio play was prevented or failed, falling back to Web Speech', err);
+      currentAudio = null;
+      fallbackWebSpeech(char, speechText, onMouthToggle, onComplete);
+    });
+  }
+
   function cleanupMouth(onMouthToggle) {
     if (mouthInterval) {
       clearInterval(mouthInterval);
@@ -391,6 +430,11 @@ const CharacterManager = (() => {
   }
 
   function stopSpeaking() {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAudio = null;
+    }
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
     }
