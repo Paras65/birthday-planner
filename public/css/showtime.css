@@ -12,6 +12,13 @@
   margin-bottom: 20px;
 }
 
+.showtime-topbar-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .showtime-brand {
   font-family: 'Fredoka', cursive, sans-serif;
   font-size: 1.5rem;
@@ -465,6 +472,23 @@
   border-radius: 10px;
 }
 
+.stage-reactions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stage-nav-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stage-nav-btn {
+  padding: 10px 16px;
+  font-size: 0.95rem;
+}
+
 /* =========================================
    ACT 4: GRAND FINALE DANCE PARTY
    ========================================= */
@@ -713,6 +737,278 @@
   font-size: 0.85rem;
   font-weight: 800;
   color: #e11d48;
+}
+
+.scrapbook-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 14px;
+}
+
+.scrapbook-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS (SHOWTIME)
+   ========================================= */
+@media (max-width: 650px) {
+  .showtime-page-shell {
+    padding: 12px 10px 60px;
+  }
+
+  .showtime-topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .showtime-brand {
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .showtime-topbar-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .showtime-topbar-actions .btn,
+  .showtime-topbar-actions select {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-content: center;
+    padding: 8px 6px !important;
+    font-size: 0.8rem !important;
+    min-height: 40px;
+  }
+
+  /* Cake Section Mobile */
+  .cake-section {
+    padding: 24px 14px;
+  }
+
+  .celebration-title {
+    font-size: 1.85rem;
+  }
+
+  .celebration-subtitle {
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+  }
+
+  .cake-container {
+    transform: scale(0.92);
+    margin: -10px auto 20px;
+  }
+
+  .cake-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .cake-actions .btn {
+    width: 100%;
+    padding: 14px 16px !important;
+    font-size: 1.15rem !important;
+  }
+
+  /* Stage Section Mobile */
+  .stage-section {
+    border-width: 4px;
+  }
+
+  .curtain-valance {
+    height: 38px;
+    font-size: 0.85rem;
+  }
+
+  .stage-theater-frame {
+    padding: 14px 10px 16px;
+    min-height: auto;
+  }
+
+  .spotlight-beam {
+    width: 100%;
+  }
+
+  .stage-show-grid {
+    margin-top: 24px;
+    gap: 16px;
+  }
+
+  .stage-avatar {
+    width: 130px;
+    height: 130px;
+  }
+
+  .stage-wish-card {
+    padding: 14px 12px;
+    border-radius: 18px;
+    gap: 12px;
+  }
+
+  .selfie-and-sender {
+    gap: 12px;
+  }
+
+  .selfie-frame-outer {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+  }
+
+  .sender-info {
+    font-size: 1.15rem;
+  }
+
+  .relation-pill {
+    font-size: 0.78rem;
+    padding: 2px 8px;
+  }
+
+  .speech-bubble {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+
+  .speech-quote {
+    font-size: 1.15rem;
+  }
+
+  /* Stage Bottom Bar Mobile */
+  .stage-bottom-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 0 0;
+  }
+
+  .stage-reactions-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .wish-counter-badge {
+    padding: 4px 12px;
+    font-size: 0.85rem;
+  }
+
+  .kid-reactions-bar {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .reaction-btn {
+    flex: 1;
+    padding: 8px 4px;
+    font-size: 0.85rem;
+    justify-content: center;
+  }
+
+  .stage-nav-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+
+  .stage-nav-btn {
+    width: 100%;
+    padding: 10px 8px !important;
+    font-size: 0.88rem !important;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  /* Finale Section Mobile */
+  .finale-section {
+    padding: 24px 12px;
+    border-width: 4px;
+  }
+
+  .finale-title {
+    font-size: 1.8rem;
+  }
+
+  .finale-subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .dance-crew-row {
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .dancing-toon {
+    width: 80px;
+  }
+
+  .toon-dance-svg {
+    width: 65px;
+    height: 65px;
+  }
+
+  .toon-dance-label {
+    font-size: 0.75rem;
+  }
+
+  /* Scrapbook Modal Mobile */
+  .modal-card {
+    padding: 16px 12px !important;
+    border-radius: 20px !important;
+    max-height: 92vh !important;
+  }
+
+  .scrapbook-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .scrapbook-header h2 {
+    font-size: 1.3rem !important;
+  }
+
+  .scrapbook-header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .scrapbook-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .polaroid-photo-box {
+    height: 220px;
+  }
+}
+
+@media (max-width: 380px) {
+  .reaction-btn {
+    font-size: 0.78rem;
+    padding: 6px 2px;
+  }
+  .stage-nav-btn {
+    font-size: 0.82rem !important;
+  }
 }
 
 @media print {

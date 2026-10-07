@@ -15,7 +15,7 @@
           <span>🎂</span>
           <span><span id="kidNameHeader">Aarav</span>'s Grand Celebration</span>
         </div>
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <div class="showtime-topbar-actions">
           <a id="showtimeWhatsappShareBtn" target="_blank" class="btn btn-whatsapp" style="font-size: 0.85rem; padding: 6px 14px;">
             💬 WhatsApp Invite
           </a>
@@ -115,34 +115,36 @@
 
           <!-- Stage Bottom Controls & Kid Reactions -->
           <div class="stage-bottom-bar">
-            <!-- Wish Counter Badge -->
-            <div id="wishCounterBadge" class="wish-counter-badge">Wish 1 of 3</div>
+            <!-- Reactions & Counter Row -->
+            <div class="stage-reactions-row">
+              <div id="wishCounterBadge" class="wish-counter-badge">Wish 1 of 3</div>
 
-            <!-- Kid's Live Reaction Buttons -->
-            <div class="kid-reactions-bar">
-              <button id="reactHugBtn" class="reaction-btn" title="Send Tight Hug">
-                <span>🤗</span> Hug <span class="reaction-count">0</span>
-              </button>
-              <button id="reactKissBtn" class="reaction-btn" title="Send Flying Kiss">
-                <span>😘</span> Kiss <span class="reaction-count">0</span>
-              </button>
-              <button id="reactHighfiveBtn" class="reaction-btn" title="High Five">
-                <span>✋</span> High-Five <span class="reaction-count">0</span>
-              </button>
+              <!-- Kid's Live Reaction Buttons -->
+              <div class="kid-reactions-bar">
+                <button id="reactHugBtn" class="reaction-btn" title="Send Tight Hug">
+                  <span>🤗</span> Hug <span class="reaction-count">0</span>
+                </button>
+                <button id="reactKissBtn" class="reaction-btn" title="Send Flying Kiss">
+                  <span>😘</span> Kiss <span class="reaction-count">0</span>
+                </button>
+                <button id="reactHighfiveBtn" class="reaction-btn" title="High Five">
+                  <span>✋</span> High-Five <span class="reaction-count">0</span>
+                </button>
+              </div>
             </div>
 
             <!-- Navigation Controls -->
-            <div style="display: flex; gap: 8px;">
-              <button id="prevWishBtn" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.95rem;">
+            <div class="stage-nav-controls">
+              <button id="prevWishBtn" class="btn btn-secondary stage-nav-btn">
                 ⬅️ Prev
               </button>
-              <button id="replayWishBtn" class="btn btn-secondary" style="padding: 10px 16px; font-size: 0.95rem;">
+              <button id="replayWishBtn" class="btn btn-secondary stage-nav-btn">
                 🔄 Replay
               </button>
-              <button id="nextWishBtn" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.95rem;">
+              <button id="nextWishBtn" class="btn btn-primary stage-nav-btn">
                 Next ➡️
               </button>
-              <button id="finaleBtn" class="btn btn-accent" style="padding: 10px 18px; font-size: 0.95rem;">
+              <button id="finaleBtn" class="btn btn-accent stage-nav-btn">
                 🕺 Dance Party!
               </button>
             </div>
@@ -186,9 +188,9 @@
          ========================================= -->
     <div id="scrapbookModal" class="modal-overlay">
       <div class="modal-card" style="max-width: 880px; max-height: 90vh; overflow-y: auto;">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 14px;">
+        <div class="scrapbook-header">
           <h2 style="margin: 0; font-size: 1.6rem; color: var(--primary);">📖 Family Birthday Scrapbook Album</h2>
-          <div style="display: flex; gap: 10px;">
+          <div class="scrapbook-header-actions">
             <button id="printScrapbookBtn" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.95rem;">
               🖨️ Print / Save PDF
             </button>
