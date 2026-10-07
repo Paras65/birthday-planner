@@ -21,18 +21,53 @@ const CharacterManager = (() => {
   }
 
   const characters = {
+    veer: {
+      id: 'veer',
+      name: 'Super Veer',
+      badge: '🦸 Super Veer',
+      themeColor: '#ef4444',
+      clipName: 'veer-intro',
+      pitch: 1.15, // Strong, heroic, confident pitch
+      rate: 1.16,  // Energetic punchy superhero pace
+      soundFx: 'heroFanfare',
+      voiceGender: 'male',
+      introPrefix: (sender) => `Dhoom dhadaka! Super Veer laya hai ${sender} ka superpower wish: `,
+      preferredVoiceNames: ['Prabhat', 'Madhur', 'Google हिन्दी'],
+      intro: '⚡ Dhoom Dhadaka! Superpowers unlocked today!',
+      renderSvg: (mouthOpen = false) => `
+        <svg viewBox="0 0 160 160" class="toon-svg toon-hero">
+          <path d="M40,75 L15,145 L70,120 L80,148 L90,120 L145,145 L120,75 Z" fill="#dc2626"/>
+          <circle cx="80" cy="80" r="46" fill="#fed7aa" stroke="#c2410c" stroke-width="3"/>
+          <path d="M38,70 Q35,35 80,35 Q125,35 122,70 Q105,48 80,48 Q55,48 38,70 Z" fill="#1e293b"/>
+          <path d="M45,70 C55,62 70,68 80,72 C90,68 105,62 115,70 C120,82 105,88 92,84 C80,80 80,80 68,84 C55,88 40,82 45,70 Z" fill="#2563eb" stroke="#1d4ed8" stroke-width="2"/>
+          <ellipse cx="62" cy="74" rx="8" ry="6" fill="#ffffff"/>
+          <ellipse cx="98" cy="74" rx="8" ry="6" fill="#ffffff"/>
+          <circle cx="63" cy="74" r="3.5" fill="#1e293b"/>
+          <circle cx="97" cy="74" r="3.5" fill="#1e293b"/>
+          <polygon points="80,38 74,48 81,48 77,58 86,47 80,47" fill="#fbbf24"/>
+          ${
+            mouthOpen
+              ? `<path d="M70,98 Q80,118 90,98 Z" fill="#991b1b" stroke="#1e293b" stroke-width="2"/>
+                 <rect x="73" y="99" width="14" height="4" fill="#ffffff"/>`
+              : `<path d="M68,102 Q80,114 92,102" stroke="#991b1b" stroke-width="3.5" fill="none" stroke-linecap="round"/>`
+          }
+        </svg>
+      `,
+    },
+
     mimi: {
       id: 'mimi',
       name: 'Mimi The Kitty',
       badge: '🐱 Mimi Kitty',
       themeColor: '#ff5da2',
+      clipName: 'mimi-intro',
       pitch: 1.6, // Cute high-pitched squeaky kitten voice
-      rate: 1.25, // Fast playful kitten speed
+      rate: 1.40, // Fast playful kitten speed
       soundFx: 'sparkle',
       voiceGender: 'female',
       introPrefix: (sender) => `Meow meow! Suno sab log! ${sender} ne bheja hai pyara sa wish: `,
       preferredVoiceNames: ['Swara', 'Ana', 'Google हिन्दी', 'Zira', 'Heera', 'Jenny'],
-      intro: 'Meow-magical birthday wishes!',
+      intro: '🐾 Meow-magical birthday wishes!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-mimi">
           <defs>
@@ -76,13 +111,14 @@ const CharacterManager = (() => {
       name: 'Bhalu Dada',
       badge: '🐻 Bhalu Dada',
       themeColor: '#b45309',
+      clipName: 'bhalu-intro',
       pitch: 0.62, // Deep, heavy, cuddly bear tone
-      rate: 0.80, // Slow chubby bear pace
+      rate: 0.78, // Slow chubby bear pace
       soundFx: 'boing',
       voiceGender: 'male',
       introPrefix: (sender) => `Arre waah! Hahaha! Suno mere pyare champ, ${sender} bol rahe hain: `,
       preferredVoiceNames: ['Madhur', 'Prabhat', 'Ravi', 'Guy', 'Google हिन्दी'],
-      intro: 'Bhalu Dada ki taraf se dher saara aashirwaad aur chocolate!',
+      intro: '🍯 Bhalu Dada ki taraf se dher saara aashirwaad aur chocolate!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-bhalu">
           <circle cx="35" cy="45" r="22" fill="#8d5b32" stroke="#5d3a1a" stroke-width="3"/>
@@ -113,13 +149,14 @@ const CharacterManager = (() => {
       name: 'Pari The Fairy',
       badge: '👑 Pari Fairy',
       themeColor: '#ec4899',
+      clipName: 'fairy-intro',
       pitch: 1.45, // Sweet, light, magical fairy tone
-      rate: 1.15,
+      rate: 1.32,
       soundFx: 'sparkle',
       voiceGender: 'female',
       introPrefix: (sender) => `Chhoo mantar! Chamakti pari aayi hai, aur ${sender} ne kaha hai: `,
       preferredVoiceNames: ['Neerja', 'Swara', 'Jenny', 'Google हिन्दी'],
-      intro: 'May all your magical dreams come true today!',
+      intro: '✨ May all your magical dreams come true today!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-fairy">
           <defs>
@@ -151,51 +188,19 @@ const CharacterManager = (() => {
       `,
     },
 
-    superhero: {
-      id: 'superhero',
-      name: 'Super Veer',
-      badge: '🦸 Super Veer',
-      themeColor: '#ef4444',
-      pitch: 1.05, // Strong, heroic, confident pitch
-      rate: 1.12,  // Energetic punchy pace
-      soundFx: 'fanfare',
-      voiceGender: 'male',
-      introPrefix: (sender) => `Dhoom dhadaka! Super Veer laya hai ${sender} ka superpower wish: `,
-      preferredVoiceNames: ['Prabhat', 'Madhur', 'Google हिन्दी'],
-      intro: 'Superpowers unlocked today! Heroic birthday celebration!',
-      renderSvg: (mouthOpen = false) => `
-        <svg viewBox="0 0 160 160" class="toon-svg toon-hero">
-          <path d="M40,75 L15,145 L70,120 L80,148 L90,120 L145,145 L120,75 Z" fill="#dc2626"/>
-          <circle cx="80" cy="80" r="46" fill="#fed7aa" stroke="#c2410c" stroke-width="3"/>
-          <path d="M38,70 Q35,35 80,35 Q125,35 122,70 Q105,48 80,48 Q55,48 38,70 Z" fill="#1e293b"/>
-          <path d="M45,70 C55,62 70,68 80,72 C90,68 105,62 115,70 C120,82 105,88 92,84 C80,80 80,80 68,84 C55,88 40,82 45,70 Z" fill="#2563eb" stroke="#1d4ed8" stroke-width="2"/>
-          <ellipse cx="62" cy="74" rx="8" ry="6" fill="#ffffff"/>
-          <ellipse cx="98" cy="74" rx="8" ry="6" fill="#ffffff"/>
-          <circle cx="63" cy="74" r="3.5" fill="#1e293b"/>
-          <circle cx="97" cy="74" r="3.5" fill="#1e293b"/>
-          <polygon points="80,38 74,48 81,48 77,58 86,47 80,47" fill="#fbbf24"/>
-          ${
-            mouthOpen
-              ? `<path d="M70,98 Q80,118 90,98 Z" fill="#991b1b" stroke="#1e293b" stroke-width="2"/>
-                 <rect x="73" y="99" width="14" height="4" fill="#ffffff"/>`
-              : `<path d="M68,102 Q80,114 92,102" stroke="#991b1b" stroke-width="3.5" fill="none" stroke-linecap="round"/>`
-          }
-        </svg>
-      `,
-    },
-
     dino: {
       id: 'dino',
       name: 'Dino Rex',
       badge: '🦖 Dino Rex',
       themeColor: '#10b981',
+      clipName: 'dino-intro',
       pitch: 0.68, // Goofy, low, bouncy dinosaur rumble
-      rate: 0.85,  // Deep funny giant pace
-      soundFx: 'partyHorn',
+      rate: 0.82,  // Deep funny giant pace
+      soundFx: 'dinoRoar',
       voiceGender: 'male',
       introPrefix: (sender) => `Roaaar! Ohooo! Mazedaar din hai! ${sender} kehte hain: `,
       preferredVoiceNames: ['Madhur', 'Prabhat', 'Google हिन्दी'],
-      intro: 'ROAAAR! Happy Birthday to the coolest champion!',
+      intro: '🦖 ROAAAR! Happy Birthday to the coolest champion!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-dino">
           <polygon points="70,22 80,35 60,35" fill="#f59e0b"/>
@@ -228,13 +233,14 @@ const CharacterManager = (() => {
       name: 'Robo Chintu',
       badge: '🤖 Robo Chintu',
       themeColor: '#06b6d4',
+      clipName: 'robo-intro',
       pitch: 1.35, // Monotone electronic robot pitch
-      rate: 1.02,  // Measured mechanical pace
+      rate: 1.22,  // Measured mechanical pace
       soundFx: 'robotBeep',
       voiceGender: 'robot',
       introPrefix: (sender) => `BEEP BOOP! Birthday greetings received from ${sender}! `,
       preferredVoiceNames: ['David', 'George', 'Microsoft'],
-      intro: 'BEEP BOOP! Happy Birthday signal transmission activated!',
+      intro: '⚡ BEEP BOOP! Happy Birthday signal transmission activated!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-robo">
           <line x1="80" y1="40" x2="80" y2="15" stroke="#0891b2" stroke-width="5" stroke-linecap="round"/>
@@ -261,15 +267,26 @@ const CharacterManager = (() => {
     },
   };
 
+  // Backwards-compatible alias: 'superhero' -> 'veer'
+  characters.superhero = characters.veer;
+
   let currentUtterance = null;
   let mouthInterval = null;
 
   function getAll() {
-    return Object.values(characters);
+    return [
+      characters.veer,
+      characters.mimi,
+      characters.bhalu,
+      characters.fairy,
+      characters.dino,
+      characters.robo,
+    ];
   }
 
   function get(id) {
-    return characters[id] || characters.mimi;
+    if (id === 'superhero') return characters.veer;
+    return characters[id] || characters.veer;
   }
 
   function getAvailableVoices() {
@@ -338,17 +355,26 @@ const CharacterManager = (() => {
 
   let currentAudio = null;
 
-  // Real-time Web Audio API cartoon voice filter sculptor
+  // Real-time Web Audio API cartoon voice filter sculptor with pitch warping (Option 3)
   function applyCharacterAudioFilter(audio, char) {
+    try {
+      audio.preservesPitch = false;
+      audio.mozPreservesPitch = false;
+      audio.webkitPreservesPitch = false;
+    } catch (e) {
+      console.log('preservesPitch flag setting', e);
+    }
     audio.playbackRate = char.rate || 1.0;
+    audio.crossOrigin = 'anonymous';
 
     if (!window.AudioContext && !window.webkitAudioContext) return;
 
     try {
       const ac = window.SoundFx && SoundFx.getAudioContext ? SoundFx.getAudioContext() : new (window.AudioContext || window.webkitAudioContext)();
-      if (!ac) return;
+      if (!ac || audio._connectedToAudioContext) return;
 
       const source = ac.createMediaElementSource(audio);
+      audio._connectedToAudioContext = true;
 
       if (char.id === 'robo') {
         // Metallic robotic droid voice (1150Hz bandpass filter + boost)
@@ -401,7 +427,7 @@ const CharacterManager = (() => {
         source.connect(shimmer);
         shimmer.connect(ac.destination);
       } else {
-        // Super Veer - Dynamic crisp presence
+        // Super Veer - Dynamic crisp presence boost
         const presence = ac.createBiquadFilter();
         presence.type = 'peaking';
         presence.frequency.setValueAtTime(1600, ac.currentTime);
@@ -437,7 +463,7 @@ const CharacterManager = (() => {
       mouthInterval = setInterval(() => {
         isOpen = !isOpen;
         if (onMouthToggle) onMouthToggle(isOpen);
-      }, 160);
+      }, 150);
     };
 
     utterance.onend = () => {
@@ -455,57 +481,100 @@ const CharacterManager = (() => {
     synth.speak(utterance);
   }
 
-  // Speak with character
+  // Speak with character (Option 3: Pre-made Cute Cartoon Voice Clips & Real Voice Acting)
   function speak(characterId, text, onMouthToggle, onComplete, senderName = 'Family') {
     stopSpeaking();
 
     const char = get(characterId);
 
-    // Play signature cartoon SoundFx sound before speech
+    // 1. Play character's signature SoundFx sound
     if (window.SoundFx && char.soundFx && typeof SoundFx[char.soundFx] === 'function') {
       SoundFx[char.soundFx]();
     }
 
-    const cleanText = text.replace(/<[^>]*>?/gm, '');
-    const intro = char.introPrefix ? char.introPrefix(senderName) : '';
-    const speechText = `${intro}${cleanText}`;
+    // 2. Start soft cartoon party background music
+    if (window.SoundFx && SoundFx.startCartoonBGM) {
+      SoundFx.startCartoonBGM();
+    }
 
     // If user explicitly picked a custom browser voice from dropdown, use Web Speech API
     if (userPreferredVoiceURI) {
-      fallbackWebSpeech(char, speechText, onMouthToggle, onComplete);
+      const cleanText = (text || '').replace(/<[^>]*>?/gm, '');
+      const intro = char.introPrefix ? char.introPrefix(senderName) : '';
+      fallbackWebSpeech(char, `${intro}${cleanText}`, onMouthToggle, () => {
+        if (window.SoundFx && SoundFx.stopCartoonBGM) SoundFx.stopCartoonBGM();
+        if (onComplete) onComplete();
+      });
       return;
     }
 
-    // Default: Use Free Google Cartoon TTS Audio API with distinct cartoon acoustic processing
-    const ttsUrl = `/api/tts?text=${encodeURIComponent(speechText)}&lang=hi`;
-    const audio = new Audio(ttsUrl);
-    applyCharacterAudioFilter(audio, char);
-    currentAudio = audio;
+    // 3. Option 3: Play Pre-Made Animated Cartoon Voice Acting Clip
+    const clipUrl = `/assets/audio/${char.clipName || 'veer-intro'}.mp3`;
+    const introAudio = new Audio(clipUrl);
+    applyCharacterAudioFilter(introAudio, char);
+    currentAudio = introAudio;
 
     let isOpen = false;
-    audio.onplay = () => {
+    introAudio.onplay = () => {
       mouthInterval = setInterval(() => {
         isOpen = !isOpen;
         if (onMouthToggle) onMouthToggle(isOpen);
-      }, 160);
+      }, 150);
     };
 
-    audio.onended = () => {
+    const finishPresentation = () => {
       cleanupMouth(onMouthToggle);
       currentAudio = null;
+      if (window.SoundFx && SoundFx.stopCartoonBGM) SoundFx.stopCartoonBGM();
+      if (window.SoundFx && SoundFx.cheer) SoundFx.cheer();
       if (onComplete) onComplete();
     };
 
-    audio.onerror = (err) => {
-      console.warn('Server TTS failed, falling back to Web Speech API', err);
-      currentAudio = null;
-      fallbackWebSpeech(char, speechText, onMouthToggle, onComplete);
+    introAudio.onended = () => {
+      const cleanText = (text || '').replace(/<[^>]*>?/gm, '').trim();
+
+      // If there is a personalized wish message to speak after the intro clip
+      if (cleanText && cleanText.length > 0 && !cleanText.toLowerCase().includes('happy birthday to you champ!')) {
+        const msgText = `${senderName ? senderName + ' ne kaha: ' : ''}${cleanText}`;
+        const ttsUrl = `/api/tts?text=${encodeURIComponent(msgText)}&lang=hi`;
+        const msgAudio = new Audio(ttsUrl);
+        applyCharacterAudioFilter(msgAudio, char);
+        currentAudio = msgAudio;
+
+        msgAudio.onended = finishPresentation;
+        msgAudio.onerror = finishPresentation;
+        msgAudio.play().catch((err) => {
+          console.warn('Message TTS playback issue', err);
+          finishPresentation();
+        });
+      } else {
+        finishPresentation();
+      }
     };
 
-    audio.play().catch((err) => {
-      console.warn('Audio play was prevented or failed, falling back to Web Speech', err);
-      currentAudio = null;
-      fallbackWebSpeech(char, speechText, onMouthToggle, onComplete);
+    introAudio.onerror = (err) => {
+      console.warn('Clip playback failed, falling back to TTS / WebSpeech', err);
+      const cleanText = (text || '').replace(/<[^>]*>?/gm, '').trim() || 'Happy Birthday!';
+      const intro = char.introPrefix ? char.introPrefix(senderName) : '';
+      const speechText = `${intro}${cleanText}`;
+
+      const ttsUrl = `/api/tts?text=${encodeURIComponent(speechText)}&lang=hi`;
+      const fallbackAudio = new Audio(ttsUrl);
+      applyCharacterAudioFilter(fallbackAudio, char);
+      currentAudio = fallbackAudio;
+
+      fallbackAudio.onended = finishPresentation;
+      fallbackAudio.onerror = () => {
+        fallbackWebSpeech(char, speechText, onMouthToggle, finishPresentation);
+      };
+      fallbackAudio.play().catch(() => {
+        fallbackWebSpeech(char, speechText, onMouthToggle, finishPresentation);
+      });
+    };
+
+    introAudio.play().catch((err) => {
+      console.warn('Audio play was prevented or failed', err);
+      introAudio.onerror(err);
     });
   }
 
@@ -522,6 +591,9 @@ const CharacterManager = (() => {
       currentAudio.pause();
       currentAudio.currentTime = 0;
       currentAudio = null;
+    }
+    if (window.SoundFx && SoundFx.stopCartoonBGM) {
+      SoundFx.stopCartoonBGM();
     }
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();

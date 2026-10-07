@@ -270,6 +270,124 @@ const SoundFx = (() => {
     });
   }
 
+  // 10. Heroic Superhero Trumpet Fanfare
+  function heroFanfare() {
+    const ac = getAudioContext();
+    if (!ac) return;
+
+    // Brassy heroic stabs: C4, E4, G4, high C5, G4, high C5!
+    const notes = [
+      { f: 261.63, d: 0.12 },
+      { f: 329.63, d: 0.12 },
+      { f: 392.00, d: 0.15 },
+      { f: 523.25, d: 0.35 },
+      { f: 392.00, d: 0.12 },
+      { f: 523.25, d: 0.50 },
+    ];
+
+    let t = ac.currentTime + 0.02;
+    notes.forEach((note) => {
+      const osc = ac.createOscillator();
+      const filter = ac.createBiquadFilter();
+      const gain = ac.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(note.f, t);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(2000, t);
+      filter.frequency.exponentialRampToValueAtTime(800, t + note.d);
+
+      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + note.d);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ac.destination);
+
+      osc.start(t);
+      osc.stop(t + note.d + 0.05);
+
+      t += note.d + 0.04;
+    });
+  }
+
+  // 11. Goofy Dinosaur Roar & Rumble
+  function dinoRoar() {
+    const ac = getAudioContext();
+    if (!ac) return;
+
+    const osc = ac.createOscillator();
+    const filter = ac.createBiquadFilter();
+    const gain = ac.createGain();
+
+    osc.type = 'sawtooth';
+    const t = ac.currentTime;
+    osc.frequency.setValueAtTime(85, t);
+    osc.frequency.linearRampToValueAtTime(175, t + 0.25);
+    osc.frequency.exponentialRampToValueAtTime(45, t + 0.7);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(550, t);
+
+    gain.gain.setValueAtTime(0.3, t);
+    gain.gain.linearRampToValueAtTime(0.35, t + 0.25);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.75);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(ac.destination);
+
+    osc.start(t);
+    osc.stop(t + 0.8);
+  }
+
+  // 12. Upbeat Cartoon Party Background Music (BGM Loop)
+  let bgmInterval = null;
+  let bgmPlaying = false;
+
+  function startCartoonBGM() {
+    if (bgmPlaying) return;
+    const ac = getAudioContext();
+    if (!ac) return;
+    bgmPlaying = true;
+
+    // Cheerful bouncy cartoon marimba melody: C - E - G - A - G - E - D - C
+    const melody = [523.25, 659.25, 783.99, 880.0, 783.99, 659.25, 587.33, 523.25];
+    let noteIdx = 0;
+
+    bgmInterval = setInterval(() => {
+      if (!bgmPlaying) return;
+      const t = ac.currentTime;
+      const freq = melody[noteIdx % melody.length];
+      noteIdx++;
+
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+
+      // Soft non-intrusive volume (0.05) so voice remains crystal clear
+      gain.gain.setValueAtTime(0.05, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+
+      osc.connect(gain);
+      gain.connect(ac.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.2);
+    }, 230);
+  }
+
+  function stopCartoonBGM() {
+    bgmPlaying = false;
+    if (bgmInterval) {
+      clearInterval(bgmInterval);
+      bgmInterval = null;
+    }
+  }
+
   return {
     init,
     getAudioContext,
@@ -281,6 +399,10 @@ const SoundFx = (() => {
     cheer,
     fanfare,
     robotBeep,
+    heroFanfare,
+    dinoRoar,
+    startCartoonBGM,
+    stopCartoonBGM,
     click,
   };
 })();

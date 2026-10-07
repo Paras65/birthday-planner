@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewShowtimeBtn = document.getElementById('viewShowtimeBtn');
 
   // State
-  let selectedCharacterId = 'mimi';
+  let selectedCharacterId = 'veer';
   let userImage = null;
   let activeStickers = []; // [{ id, x, y, size }]
   let selectedStickerIndex = -1;

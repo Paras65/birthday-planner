@@ -335,8 +335,37 @@ app.post('/api/wishes/:id/reaction', (req, res) => {
   res.json({ success: true, reactions: wish.reactions });
 });
 
+// Ensure Option 3 Pre-made Cartoon Audio Clips exist on disk
+async function ensureCartoonAudioClips() {
+  const audioDir = path.join(__dirname, 'public', 'assets', 'audio');
+  if (!fs.existsSync(audioDir)) fs.mkdirSync(audioDir, { recursive: true });
+
+  const clips = {
+    'veer-intro': 'धूम धड़ाका! सुपर वीर आ गया! हैप्पी बर्थडे चैंपियन! सुनो तुम्हारे लिए एक सुपर विश आई है!',
+    'mimi-intro': 'म्याऊं म्याऊं! येईईई! हैप्पी बर्थडे स्वीट चैंपियन! सुनो सुनो, बहुत प्यारा विश आया है!',
+    'bhalu-intro': 'हाहाहा! अरे वाह मेरे प्यारे बच्चे! भालू दादा लाया है ढेर सारा प्यार और चॉकलेट! पार्टी शुरू!',
+    'fairy-intro': 'छू मंतर! चमकीली परी आ गई! हैप्पी मैजिकल बर्थडे! सुनो एक बहुत ही प्यारा आशीर्वाद आया है!',
+    'dino-intro': 'रोररर! ओहो! डाइनो रेक्स आ गया पार्टी करने! सबसे जबरदस्त बर्थडे विश सुनो!',
+    'robo-intro': 'बीप बूप! सिस्टम स्कैन कम्प्लीट! आज सबसे स्पेशल सुपरहीरो का बर्थडे है! टार्गेट मैक्सिमम मस्ती!'
+  };
+
+  for (const [key, text] of Object.entries(clips)) {
+    const filePath = path.join(audioDir, `${key}.mp3`);
+    if (!fs.existsSync(filePath)) {
+      try {
+        const base64 = await googleTTS.getAudioBase64(text, { lang: 'hi', slow: false });
+        fs.writeFileSync(filePath, Buffer.from(base64, 'base64'));
+        console.log(`🎙️ Pre-generated cartoon audio clip: ${key}.mp3`);
+      } catch (e) {
+        console.warn(`Could not generate audio clip ${key}:`, e.message);
+      }
+    }
+  }
+}
+
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await ensureCartoonAudioClips();
   console.log(`🎉 KidBirthday App is running at http://localhost:${PORT}`);
   console.log(`- Host Portal: http://localhost:${PORT}/`);
   console.log(`- Family Wish Link (Demo): http://localhost:${PORT}/wish?party=demo-kid`);
