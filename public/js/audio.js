@@ -246,8 +246,33 @@ const SoundFx = (() => {
     osc.stop(ac.currentTime + 0.07);
   }
 
+  // 9. Electronic Robot Computer Beep
+  function robotBeep() {
+    const ac = getAudioContext();
+    if (!ac) return;
+
+    const freqs = [880, 1760, 587, 1174];
+    freqs.forEach((freq, idx) => {
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      const time = ac.currentTime + idx * 0.07;
+
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(freq, time);
+
+      gain.gain.setValueAtTime(0.2, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
+
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(time);
+      osc.stop(time + 0.07);
+    });
+  }
+
   return {
     init,
+    getAudioContext,
     pop,
     candleBlow,
     boing,
@@ -255,6 +280,7 @@ const SoundFx = (() => {
     partyHorn,
     cheer,
     fanfare,
+    robotBeep,
     click,
   };
 })();

@@ -26,11 +26,12 @@ const CharacterManager = (() => {
       name: 'Mimi The Kitty',
       badge: '🐱 Mimi Kitty',
       themeColor: '#ff5da2',
-      pitch: 1.28, // Cheerful sweet tone without SAPI distortion
-      rate: 1.05,
+      pitch: 1.6, // Cute high-pitched squeaky kitten voice
+      rate: 1.25, // Fast playful kitten speed
       soundFx: 'sparkle',
+      voiceGender: 'female',
       introPrefix: (sender) => `Meow meow! Suno sab log! ${sender} ne bheja hai pyara sa wish: `,
-      preferredVoiceNames: ['Ana', 'Maisie', 'Swara', 'Zira', 'Google हिन्दी', 'Google UK English Female', 'Heera', 'Jenny'],
+      preferredVoiceNames: ['Swara', 'Ana', 'Google हिन्दी', 'Zira', 'Heera', 'Jenny'],
       intro: 'Meow-magical birthday wishes!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-mimi">
@@ -75,11 +76,12 @@ const CharacterManager = (() => {
       name: 'Bhalu Dada',
       badge: '🐻 Bhalu Dada',
       themeColor: '#b45309',
-      pitch: 0.88, // Warm, cuddly bear tone
-      rate: 0.92,
+      pitch: 0.62, // Deep, heavy, cuddly bear tone
+      rate: 0.80, // Slow chubby bear pace
       soundFx: 'boing',
+      voiceGender: 'male',
       introPrefix: (sender) => `Arre waah! Hahaha! Suno mere pyare champ, ${sender} bol rahe hain: `,
-      preferredVoiceNames: ['Madhur', 'Prabhat', 'Ravi', 'Guy', 'George', 'David', 'Google हिन्दी'],
+      preferredVoiceNames: ['Madhur', 'Prabhat', 'Ravi', 'Guy', 'Google हिन्दी'],
       intro: 'Bhalu Dada ki taraf se dher saara aashirwaad aur chocolate!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-bhalu">
@@ -111,11 +113,12 @@ const CharacterManager = (() => {
       name: 'Pari The Fairy',
       badge: '👑 Pari Fairy',
       themeColor: '#ec4899',
-      pitch: 1.22,
-      rate: 0.95,
+      pitch: 1.45, // Sweet, light, magical fairy tone
+      rate: 1.15,
       soundFx: 'sparkle',
+      voiceGender: 'female',
       introPrefix: (sender) => `Chhoo mantar! Chamakti pari aayi hai, aur ${sender} ne kaha hai: `,
-      preferredVoiceNames: ['Neerja', 'Swara', 'Jenny', 'Zira', 'Google हिन्दी', 'Google UK English Female'],
+      preferredVoiceNames: ['Neerja', 'Swara', 'Jenny', 'Google हिन्दी'],
       intro: 'May all your magical dreams come true today!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-fairy">
@@ -153,11 +156,12 @@ const CharacterManager = (() => {
       name: 'Super Veer',
       badge: '🦸 Super Veer',
       themeColor: '#ef4444',
-      pitch: 1.08,
-      rate: 1.15,
+      pitch: 1.05, // Strong, heroic, confident pitch
+      rate: 1.12,  // Energetic punchy pace
       soundFx: 'fanfare',
+      voiceGender: 'male',
       introPrefix: (sender) => `Dhoom dhadaka! Super Veer laya hai ${sender} ka superpower wish: `,
-      preferredVoiceNames: ['Prabhat', 'Guy', 'Google हिन्दी', 'Google US English'],
+      preferredVoiceNames: ['Prabhat', 'Madhur', 'Google हिन्दी'],
       intro: 'Superpowers unlocked today! Heroic birthday celebration!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-hero">
@@ -185,11 +189,12 @@ const CharacterManager = (() => {
       name: 'Dino Rex',
       badge: '🦖 Dino Rex',
       themeColor: '#10b981',
-      pitch: 0.96,
-      rate: 1.08,
+      pitch: 0.68, // Goofy, low, bouncy dinosaur rumble
+      rate: 0.85,  // Deep funny giant pace
       soundFx: 'partyHorn',
+      voiceGender: 'male',
       introPrefix: (sender) => `Roaaar! Ohooo! Mazedaar din hai! ${sender} kehte hain: `,
-      preferredVoiceNames: ['Ravi', 'Guy', 'Google हिन्दी', 'Google US English'],
+      preferredVoiceNames: ['Madhur', 'Prabhat', 'Google हिन्दी'],
       intro: 'ROAAAR! Happy Birthday to the coolest champion!',
       renderSvg: (mouthOpen = false) => `
         <svg viewBox="0 0 160 160" class="toon-svg toon-dino">
@@ -223,9 +228,10 @@ const CharacterManager = (() => {
       name: 'Robo Chintu',
       badge: '🤖 Robo Chintu',
       themeColor: '#06b6d4',
-      pitch: 1.25,
-      rate: 1.05,
-      soundFx: 'boing',
+      pitch: 1.35, // Monotone electronic robot pitch
+      rate: 1.02,  // Measured mechanical pace
+      soundFx: 'robotBeep',
+      voiceGender: 'robot',
       introPrefix: (sender) => `BEEP BOOP! Birthday greetings received from ${sender}! `,
       preferredVoiceNames: ['David', 'George', 'Microsoft'],
       intro: 'BEEP BOOP! Happy Birthday signal transmission activated!',
@@ -287,7 +293,7 @@ const CharacterManager = (() => {
     );
   }
 
-  // Smart Voice Picker: Always auto-selects Hindi/Natural Indian voice first
+  // Smart Voice Picker: Picks gender-matched Hindi voices for distinct cartoon characters
   function selectVoiceForCharacter(char) {
     refreshVoices();
     if (cachedVoices.length === 0) return null;
@@ -298,34 +304,116 @@ const CharacterManager = (() => {
       if (userChoice) return userChoice;
     }
 
-    // 2. Highest priority: Auto-select Hindi voice so it sounds natural in Hindi/Hinglish!
-    const bestHindi = getBestHindiVoice();
-    if (bestHindi && (bestHindi.lang.startsWith('hi') || bestHindi.name.includes('Hindi') || bestHindi.lang.includes('IN'))) {
-      return bestHindi;
-    }
-
-    // 3. Search for natural/high-quality voices based on character's preferred list
-    for (const name of char.preferredVoiceNames) {
-      const match = cachedVoices.find((v) => v.name.includes(name) || v.voiceURI.includes(name));
-      if (match) return match;
-    }
-
-    // 4. Search for Natural / Online / Google voices
-    const naturalVoice = cachedVoices.find(
-      (v) => v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Online')
+    const hindiVoices = cachedVoices.filter(
+      (v) => (v.lang && v.lang.startsWith('hi')) || (v.name && v.name.toLowerCase().includes('hindi'))
     );
-    if (naturalVoice) return naturalVoice;
 
-    // 5. Prefer female voice for mimi/fairy
-    if (char.id === 'mimi' || char.id === 'fairy') {
-      const female = cachedVoices.find((v) => v.name.includes('Zira') || v.name.includes('Female') || v.name.includes('Eva'));
-      if (female) return female;
+    // 2. Select female Hindi voice for female characters (Mimi, Pari)
+    if (char.voiceGender === 'female') {
+      const femaleHindi = hindiVoices.find(
+        (v) => v.name.includes('Swara') || v.name.includes('Female') || v.name.includes('Google हिन्दी') || v.name.includes('Heera')
+      );
+      if (femaleHindi) return femaleHindi;
+      const anyFemale = cachedVoices.find(
+        (v) => v.name.includes('Zira') || v.name.includes('Jenny') || v.name.includes('Female')
+      );
+      if (anyFemale) return anyFemale;
+    } else if (char.voiceGender === 'male') {
+      // 3. Select male/deep Hindi voice for male characters (Bhalu, Superhero, Dino)
+      const maleHindi = hindiVoices.find(
+        (v) => v.name.includes('Madhur') || v.name.includes('Male') || v.name.includes('Prabhat') || v.name.includes('Ravi')
+      );
+      if (maleHindi) return maleHindi;
+      const anyMale = cachedVoices.find(
+        (v) => v.name.includes('David') || v.name.includes('Guy') || v.name.includes('Male')
+      );
+      if (anyMale) return anyMale;
     }
+
+    const bestHindi = getBestHindiVoice();
+    if (bestHindi) return bestHindi;
 
     return cachedVoices[0];
   }
 
   let currentAudio = null;
+
+  // Real-time Web Audio API cartoon voice filter sculptor
+  function applyCharacterAudioFilter(audio, char) {
+    audio.playbackRate = char.rate || 1.0;
+
+    if (!window.AudioContext && !window.webkitAudioContext) return;
+
+    try {
+      const ac = window.SoundFx && SoundFx.getAudioContext ? SoundFx.getAudioContext() : new (window.AudioContext || window.webkitAudioContext)();
+      if (!ac) return;
+
+      const source = ac.createMediaElementSource(audio);
+
+      if (char.id === 'robo') {
+        // Metallic robotic droid voice (1150Hz bandpass filter + boost)
+        const filter = ac.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(1150, ac.currentTime);
+        filter.Q.setValueAtTime(5.0, ac.currentTime);
+
+        const gain = ac.createGain();
+        gain.gain.setValueAtTime(2.2, ac.currentTime);
+
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(ac.destination);
+      } else if (char.id === 'bhalu' || char.id === 'dino') {
+        // Deep heavy cuddly bear / goofy dinosaur low-end rumble
+        const lowpass = ac.createBiquadFilter();
+        lowpass.type = 'lowpass';
+        lowpass.frequency.setValueAtTime(char.id === 'bhalu' ? 1700 : 1350, ac.currentTime);
+
+        const bassBoost = ac.createBiquadFilter();
+        bassBoost.type = 'lowshelf';
+        bassBoost.frequency.setValueAtTime(320, ac.currentTime);
+        bassBoost.gain.setValueAtTime(8.5, ac.currentTime);
+
+        source.connect(bassBoost);
+        bassBoost.connect(lowpass);
+        lowpass.connect(ac.destination);
+      } else if (char.id === 'mimi') {
+        // Squeaky high baby kitten
+        const highpass = ac.createBiquadFilter();
+        highpass.type = 'highpass';
+        highpass.frequency.setValueAtTime(350, ac.currentTime);
+
+        const trebleBoost = ac.createBiquadFilter();
+        trebleBoost.type = 'highshelf';
+        trebleBoost.frequency.setValueAtTime(2600, ac.currentTime);
+        trebleBoost.gain.setValueAtTime(6.5, ac.currentTime);
+
+        source.connect(highpass);
+        highpass.connect(trebleBoost);
+        trebleBoost.connect(ac.destination);
+      } else if (char.id === 'fairy') {
+        // Shimmering sweet fairy tone
+        const shimmer = ac.createBiquadFilter();
+        shimmer.type = 'peaking';
+        shimmer.frequency.setValueAtTime(3000, ac.currentTime);
+        shimmer.gain.setValueAtTime(6.0, ac.currentTime);
+
+        source.connect(shimmer);
+        shimmer.connect(ac.destination);
+      } else {
+        // Super Veer - Dynamic crisp presence
+        const presence = ac.createBiquadFilter();
+        presence.type = 'peaking';
+        presence.frequency.setValueAtTime(1600, ac.currentTime);
+        presence.gain.setValueAtTime(4.0, ac.currentTime);
+
+        source.connect(presence);
+        presence.connect(ac.destination);
+      }
+    } catch (e) {
+      console.log('Audio filter passthrough', e);
+    }
+  }
 
   function fallbackWebSpeech(char, speechText, onMouthToggle, onComplete) {
     if (!('speechSynthesis' in window)) {
@@ -388,10 +476,10 @@ const CharacterManager = (() => {
       return;
     }
 
-    // Default: Use Free Google Cartoon TTS Audio API with playful playback speed
+    // Default: Use Free Google Cartoon TTS Audio API with distinct cartoon acoustic processing
     const ttsUrl = `/api/tts?text=${encodeURIComponent(speechText)}&lang=hi`;
     const audio = new Audio(ttsUrl);
-    audio.playbackRate = char.rate || 1.1;
+    applyCharacterAudioFilter(audio, char);
     currentAudio = audio;
 
     let isOpen = false;
