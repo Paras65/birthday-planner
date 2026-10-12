@@ -85,7 +85,7 @@
                   <!-- Rendered dynamically by JS -->
                 </div>
                 <div style="margin-top: 10px; font-size: 0.85rem; color: #166534; font-weight: 700; background: #dcfce7; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
-                  🎙️ Voice: Cartoon Voice Acting & Party Clips (Option 3 ✅)
+                  🎙️ Voice: Talking Tom Voice Changer & Cartoon Stars ✅
                 </div>
               </div>
 
@@ -102,44 +102,67 @@
                 </div>
               </div>
 
-              <!-- Voice Delivery Mode (Cartoon Speech vs Real Audio) -->
+              <!-- Voice Delivery Mode (Talking Tom Voice Changer vs Cartoon Speech) -->
               <div class="form-group">
-                <label class="form-label">🎤 4. Delivery Voice Style</label>
+                <label class="form-label">🎤 4. Delivery Voice Style (Super Fun! ⭐)</label>
                 <div class="voice-type-selector">
                   <label class="radio-pill">
-                    <input type="radio" name="voiceType" value="tts" checked />
-                    <span>Cartoon Animated Voice 🗣️</span>
+                    <input type="radio" name="voiceType" value="audio" checked />
+                    <span>🎙️ Talking Tom Voice Changer (Best! 😂)</span>
                   </label>
                   <label class="radio-pill">
-                    <input type="radio" name="voiceType" value="audio" />
-                    <span>Record Real Voice 🎙️</span>
+                    <input type="radio" name="voiceType" value="tts" />
+                    <span>🗣️ Cartoon Soundbite (Text Only)</span>
                   </label>
                 </div>
 
-                <!-- Test Cartoon Voice Button -->
-                <div style="margin-top: 10px;">
+                <!-- Test Cartoon Voice Button (For Text Mode) -->
+                <div id="testVoiceBox" style="display: none; margin-top: 10px;">
                   <button type="button" id="testVoiceBtn" class="btn btn-secondary" style="font-size: 0.95rem; padding: 10px 18px;">
                     🔊 Test Cartoon Voice
                   </button>
                 </div>
 
-                <!-- Real Audio Recording UI -->
-                <div id="audioRecorderSection" class="audio-recorder-box">
-                  <p style="font-weight: 700; color: #1e3a8a; margin-bottom: 8px;">
-                    Apni aawaz mein gaana ya wish record karein (max 30s):
+                <!-- Real Audio Recording UI with Talking Tom Voice Changer -->
+                <div id="audioRecorderSection" class="audio-recorder-box" style="display: block;">
+                  <div class="voice-changer-badge">✨ 1-Tap Talking Tom Magic ✨</div>
+                  <p style="font-weight: 700; color: #1e3a8a; margin-bottom: 10px; font-size: 0.95rem;">
+                    Apni aawaz mein wish bolein — app use turant funny cartoon voice mein badal dega!
                   </p>
-                  <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-                    <button type="button" id="recordAudioBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.95rem;">
+                  <div style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                    <button type="button" id="recordAudioBtn" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.95rem;">
                       🔴 Start Recording
                     </button>
-                    <button type="button" id="stopAudioBtn" class="btn btn-secondary" style="display: none; padding: 10px 18px; font-size: 0.95rem; color: #ef4444;">
+                    <button type="button" id="stopAudioBtn" class="btn btn-secondary" style="display: none; padding: 10px 20px; font-size: 0.95rem; color: #ef4444; border-color: #ef4444;">
                       ⏹️ Stop Recording
                     </button>
-                    <span id="recordingTimer" style="display: none; font-weight: 800; color: #ef4444;">
+                    <span id="recordingTimer" style="display: none; font-weight: 800; color: #ef4444; font-size: 1.05rem;">
                       <span class="record-pulse-dot"></span>0:00
                     </span>
                   </div>
-                  <audio id="audioPreview" controls style="display: none; margin: 12px auto 0; width: 100%; max-width: 320px;"></audio>
+
+                  <!-- Voice Changer Filters (Visible once audio is recorded) -->
+                  <div id="voiceFilterControls" style="display: none; margin-top: 14px;">
+                    <p style="font-weight: 800; color: #334155; font-size: 0.88rem; margin-bottom: 8px;">
+                      🎭 Choose Cartoon Voice Filter:
+                    </p>
+                    <div class="voice-filter-chips">
+                      <button type="button" class="voice-chip active" data-effect="tom">🐱 Talking Tom (Helium)</button>
+                      <button type="button" class="voice-chip" data-effect="shinchan">👦 Shinchan Squeak</button>
+                      <button type="button" class="voice-chip" data-effect="bhalu">🐻 Bhalu Dada (Deep Bear)</button>
+                      <button type="button" class="voice-chip" data-effect="robo">🤖 Robo Droid</button>
+                      <button type="button" class="voice-chip" data-effect="normal">🎙️ Asli Aawaz</button>
+                    </div>
+
+                    <div style="margin-top: 12px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                      <button type="button" id="previewCartoonVoiceBtn" class="btn btn-accent" style="padding: 10px 20px; font-size: 0.95rem;">
+                        ▶️ Play My Cartoon Voice! 😂
+                      </button>
+                      <button type="button" id="rerecordAudioBtn" class="btn btn-secondary" style="padding: 10px 14px; font-size: 0.85rem;">
+                        🔄 Re-record
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 

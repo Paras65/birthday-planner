@@ -21,6 +21,149 @@ const CharacterManager = (() => {
   }
 
   const characters = {
+    shinchan: {
+      id: 'shinchan',
+      name: 'Shinchan',
+      badge: '👦 Shinchan',
+      themeColor: '#ef4444',
+      clipName: 'shinchan-intro',
+      pitch: 1.35,
+      rate: 1.30,
+      soundFx: 'cartoonLaugh',
+      voiceGender: 'male',
+      introPrefix: (sender) => `Oye hoye! Shinchan laya hai ${sender} ka mast wish: `,
+      preferredVoiceNames: ['Swara', 'Prabhat', 'Google हिन्दी'],
+      intro: '🎉 Oye hoye! Main aa gaya birthday party lootne!',
+      renderSvg: (mouthOpen = false) => `
+        <svg viewBox="0 0 160 160" class="toon-svg toon-shinchan">
+          <!-- Red Shirt Body -->
+          <path d="M46,115 L38,155 L122,155 L114,115 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="3"/>
+          <rect x="50" y="145" width="60" height="15" fill="#facc15"/>
+          <!-- Chunky Round Face -->
+          <ellipse cx="80" cy="72" rx="48" ry="42" fill="#fed7aa" stroke="#c2410c" stroke-width="3"/>
+          <!-- Ears -->
+          <circle cx="32" cy="74" r="10" fill="#fed7aa" stroke="#c2410c" stroke-width="2.5"/>
+          <circle cx="128" cy="74" r="10" fill="#fed7aa" stroke="#c2410c" stroke-width="2.5"/>
+          <!-- Short Spiky Black Hair -->
+          <path d="M35,60 C35,30 55,20 80,20 C105,20 125,30 125,60 C118,44 105,36 80,36 C55,36 42,44 35,60 Z" fill="#18181b"/>
+          <!-- Iconic Thick Jet-Black Arched Eyebrows! -->
+          <path d="M46,45 Q58,34 72,47" stroke="#18181b" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <path d="M88,47 Q102,34 114,45" stroke="#18181b" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- Cheeky Eyes -->
+          <ellipse cx="60" cy="62" rx="7.5" ry="9" fill="#18181b"/>
+          <ellipse cx="100" cy="62" rx="7.5" ry="9" fill="#18181b"/>
+          <circle cx="58" cy="59" r="2.5" fill="#ffffff"/>
+          <circle cx="98" cy="59" r="2.5" fill="#ffffff"/>
+          <!-- Rosy Cheeks -->
+          <circle cx="48" cy="80" r="8" fill="#fb7185" opacity="0.6"/>
+          <circle cx="112" cy="80" r="8" fill="#fb7185" opacity="0.6"/>
+          <!-- Speaking Mouth -->
+          ${
+            mouthOpen
+              ? `<path d="M64,82 Q80,114 96,82 Z" fill="#be123c" stroke="#881337" stroke-width="2.5"/>
+                 <ellipse cx="80" cy="98" rx="6" ry="4" fill="#fb7185"/>`
+              : `<path d="M66,84 Q80,100 94,84" stroke="#9f1239" stroke-width="3.5" fill="none" stroke-linecap="round"/>`
+          }
+        </svg>
+      `,
+    },
+
+    bheem: {
+      id: 'bheem',
+      name: 'Chhota Bheem',
+      badge: '🦸 Chhota Bheem',
+      themeColor: '#f97316',
+      clipName: 'bheem-intro',
+      pitch: 1.10,
+      rate: 1.15,
+      soundFx: 'heroFanfare',
+      voiceGender: 'male',
+      introPrefix: (sender) => `Dholakpur se Bheem laya hai ${sender} ka superpower wish: `,
+      preferredVoiceNames: ['Prabhat', 'Madhur', 'Google हिन्दी'],
+      intro: '🧆 Dholakpur ke laddoos aur super birthday wishes!',
+      renderSvg: (mouthOpen = false) => `
+        <svg viewBox="0 0 160 160" class="toon-svg toon-bheem">
+          <!-- Torso with Gold Necklace -->
+          <path d="M45,115 L35,155 L125,155 L115,115 Z" fill="#ea580c" stroke="#9a3412" stroke-width="3"/>
+          <circle cx="80" cy="128" r="8" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
+          <!-- Face -->
+          <circle cx="80" cy="70" r="44" fill="#e0a96d" stroke="#8c5825" stroke-width="3"/>
+          <!-- Hair & Topknot / Shikha -->
+          <path d="M38,62 C36,32 55,24 80,24 C105,24 124,32 122,62 C115,44 100,38 80,38 C60,38 45,44 38,62 Z" fill="#262626"/>
+          <circle cx="80" cy="18" r="10" fill="#262626"/>
+          <!-- Red Tilak on Forehead -->
+          <path d="M78,35 L82,35 L81,50 L79,50 Z" fill="#dc2626"/>
+          <circle cx="80" cy="54" r="2.5" fill="#facc15"/>
+          <!-- Big Friendly Eyes -->
+          <ellipse cx="62" cy="65" rx="8" ry="10" fill="#ffffff" stroke="#8c5825" stroke-width="1.5"/>
+          <ellipse cx="98" cy="65" rx="8" ry="10" fill="#ffffff" stroke="#8c5825" stroke-width="1.5"/>
+          <circle cx="63" cy="65" r="5" fill="#3f2e18"/>
+          <circle cx="97" cy="65" r="5" fill="#3f2e18"/>
+          <circle cx="61" cy="62" r="2" fill="#ffffff"/>
+          <circle cx="95" cy="62" r="2" fill="#ffffff"/>
+          <!-- Motichoor Laddoo in Hand -->
+          <circle cx="132" cy="120" r="14" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+          <circle cx="130" cy="118" r="2" fill="#ef4444"/>
+          <circle cx="134" cy="122" r="2" fill="#ef4444"/>
+          <!-- Smile / Speaking Mouth -->
+          ${
+            mouthOpen
+              ? `<path d="M65,85 Q80,112 95,85 Z" fill="#991b1b" stroke="#5d1010" stroke-width="2.5"/>
+                 <rect x="72" y="86" width="16" height="5" fill="#ffffff" rx="2"/>`
+              : `<path d="M64,88 Q80,104 96,88" stroke="#7c2d12" stroke-width="3.5" fill="none" stroke-linecap="round"/>`
+          }
+        </svg>
+      `,
+    },
+
+    tom: {
+      id: 'tom',
+      name: 'Talking Tom',
+      badge: '🐱 Talking Tom',
+      themeColor: '#3b82f6',
+      clipName: 'mimi-intro',
+      pitch: 1.55,
+      rate: 1.45,
+      soundFx: 'boing',
+      voiceGender: 'female',
+      introPrefix: (sender) => `Meow meow! Talking Tom bol raha hai, ${sender} ne kaha: `,
+      preferredVoiceNames: ['Swara', 'Ana', 'Google हिन्दी', 'Zira'],
+      intro: '🐾 Meow! Repeat after me: Happy Birthday!',
+      renderSvg: (mouthOpen = false) => `
+        <svg viewBox="0 0 160 160" class="toon-svg toon-tom">
+          <!-- Cat Ears -->
+          <polygon points="35,62 18,18 68,42" fill="#64748b" stroke="#334155" stroke-width="3"/>
+          <polygon points="38,58 28,28 62,44" fill="#cbd5e1"/>
+          <polygon points="125,62 142,18 92,42" fill="#64748b" stroke="#334155" stroke-width="3"/>
+          <polygon points="122,58 132,28 98,44" fill="#cbd5e1"/>
+          <!-- Gray Cat Face -->
+          <ellipse cx="80" cy="85" rx="54" ry="46" fill="#94a3b8" stroke="#334155" stroke-width="4"/>
+          <ellipse cx="80" cy="98" rx="28" ry="20" fill="#e2e8f0"/>
+          <!-- Big Green Glowing Eyes -->
+          <ellipse cx="58" cy="74" rx="12" ry="15" fill="#22c55e" stroke="#15803d" stroke-width="2"/>
+          <ellipse cx="102" cy="74" rx="12" ry="15" fill="#22c55e" stroke="#15803d" stroke-width="2"/>
+          <ellipse cx="58" cy="74" rx="6" ry="12" fill="#0f172a"/>
+          <ellipse cx="102" cy="74" rx="6" ry="12" fill="#0f172a"/>
+          <circle cx="56" cy="70" r="3" fill="#ffffff"/>
+          <circle cx="100" cy="70" r="3" fill="#ffffff"/>
+          <!-- Cute Pink Nose -->
+          <polygon points="80,92 74,86 86,86" fill="#f43f5e"/>
+          <!-- Whiskers -->
+          <line x1="22" y1="88" x2="48" y2="90" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="20" y1="98" x2="48" y2="96" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="138" y1="88" x2="112" y2="90" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="140" y1="98" x2="112" y2="96" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Talking Mouth -->
+          ${
+            mouthOpen
+              ? `<path d="M68,98 Q80,122 92,98 Z" fill="#e11d48" stroke="#881337" stroke-width="2.5"/>
+                 <ellipse cx="80" cy="110" rx="5" ry="3" fill="#fda4af"/>`
+              : `<path d="M68,98 Q74,105 80,98 Q86,105 92,98" stroke="#334155" stroke-width="3" fill="none" stroke-linecap="round"/>`
+          }
+        </svg>
+      `,
+    },
+
     veer: {
       id: 'veer',
       name: 'Super Veer',
@@ -267,26 +410,32 @@ const CharacterManager = (() => {
     },
   };
 
-  // Backwards-compatible alias: 'superhero' -> 'veer'
+  // Backwards-compatible aliases
+  characters.mimi = characters.tom;
   characters.superhero = characters.veer;
+  characters.fairy = characters.bheem;
+  characters.dino = characters.shinchan;
 
   let currentUtterance = null;
   let mouthInterval = null;
 
   function getAll() {
     return [
+      characters.shinchan,
+      characters.bheem,
       characters.veer,
-      characters.mimi,
+      characters.tom,
       characters.bhalu,
-      characters.fairy,
-      characters.dino,
       characters.robo,
     ];
   }
 
   function get(id) {
+    if (id === 'mimi') return characters.tom;
     if (id === 'superhero') return characters.veer;
-    return characters[id] || characters.veer;
+    if (id === 'fairy') return characters.bheem;
+    if (id === 'dino') return characters.shinchan;
+    return characters[id] || characters.shinchan;
   }
 
   function getAvailableVoices() {
@@ -390,10 +539,10 @@ const CharacterManager = (() => {
         filter.connect(gain);
         gain.connect(ac.destination);
       } else if (char.id === 'bhalu' || char.id === 'dino') {
-        // Deep heavy cuddly bear / goofy dinosaur low-end rumble
+        // Deep heavy cuddly bear rumble
         const lowpass = ac.createBiquadFilter();
         lowpass.type = 'lowpass';
-        lowpass.frequency.setValueAtTime(char.id === 'bhalu' ? 1700 : 1350, ac.currentTime);
+        lowpass.frequency.setValueAtTime(1500, ac.currentTime);
 
         const bassBoost = ac.createBiquadFilter();
         bassBoost.type = 'lowshelf';
@@ -403,29 +552,38 @@ const CharacterManager = (() => {
         source.connect(bassBoost);
         bassBoost.connect(lowpass);
         lowpass.connect(ac.destination);
-      } else if (char.id === 'mimi') {
-        // Squeaky high baby kitten
+      } else if (char.id === 'tom' || char.id === 'mimi') {
+        // Talking Tom Squeaky playful voice
         const highpass = ac.createBiquadFilter();
         highpass.type = 'highpass';
-        highpass.frequency.setValueAtTime(350, ac.currentTime);
+        highpass.frequency.setValueAtTime(320, ac.currentTime);
 
         const trebleBoost = ac.createBiquadFilter();
         trebleBoost.type = 'highshelf';
-        trebleBoost.frequency.setValueAtTime(2600, ac.currentTime);
-        trebleBoost.gain.setValueAtTime(6.5, ac.currentTime);
+        trebleBoost.frequency.setValueAtTime(2500, ac.currentTime);
+        trebleBoost.gain.setValueAtTime(6.0, ac.currentTime);
 
         source.connect(highpass);
         highpass.connect(trebleBoost);
         trebleBoost.connect(ac.destination);
-      } else if (char.id === 'fairy') {
-        // Shimmering sweet fairy tone
-        const shimmer = ac.createBiquadFilter();
-        shimmer.type = 'peaking';
-        shimmer.frequency.setValueAtTime(3000, ac.currentTime);
-        shimmer.gain.setValueAtTime(6.0, ac.currentTime);
+      } else if (char.id === 'shinchan') {
+        // Shinchan: Cheeky, bright naughty boy presence
+        const midBoost = ac.createBiquadFilter();
+        midBoost.type = 'peaking';
+        midBoost.frequency.setValueAtTime(1800, ac.currentTime);
+        midBoost.gain.setValueAtTime(6.0, ac.currentTime);
 
-        source.connect(shimmer);
-        shimmer.connect(ac.destination);
+        source.connect(midBoost);
+        midBoost.connect(ac.destination);
+      } else if (char.id === 'bheem') {
+        // Chhota Bheem: Warm, heroic presence
+        const presence = ac.createBiquadFilter();
+        presence.type = 'peaking';
+        presence.frequency.setValueAtTime(1400, ac.currentTime);
+        presence.gain.setValueAtTime(5.0, ac.currentTime);
+
+        source.connect(presence);
+        presence.connect(ac.destination);
       } else {
         // Super Veer - Dynamic crisp presence boost
         const presence = ac.createBiquadFilter();

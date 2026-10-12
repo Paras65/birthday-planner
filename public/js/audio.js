@@ -380,12 +380,32 @@ const SoundFx = (() => {
     }, 230);
   }
 
-  function stopCartoonBGM() {
-    bgmPlaying = false;
-    if (bgmInterval) {
-      clearInterval(bgmInterval);
-      bgmInterval = null;
-    }
+  // 13. Funny Cartoon Laugh / Giggles
+  function cartoonLaugh() {
+    const ac = getAudioContext();
+    if (!ac) return;
+
+    // Series of 4 bouncy joyful giggles: alternating pitch boings
+    const giggleTimes = [0.0, 0.12, 0.24, 0.36];
+    giggleTimes.forEach((gt, idx) => {
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      const t = ac.currentTime + gt;
+
+      osc.type = 'triangle';
+      const baseFreq = 580 + (idx % 2) * 120;
+      osc.frequency.setValueAtTime(baseFreq, t);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq + 180, t + 0.08);
+
+      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+
+      osc.connect(gain);
+      gain.connect(ac.destination);
+
+      osc.start(t);
+      osc.stop(t + 0.11);
+    });
   }
 
   return {
@@ -401,9 +421,229 @@ const SoundFx = (() => {
     robotBeep,
     heroFanfare,
     dinoRoar,
+    cartoonLaugh,
     startCartoonBGM,
     stopCartoonBGM,
     click,
+  };
+})();
+
+/**
+ * VoiceChanger - Real-time Talking Tom, Shinchan, Bhalu & Robo voice warping engine
+ * Uses Web Audio API & OfflineAudioContext with standard PCM WAV export
+ */
+const VoiceChanger = (() => {
+  let activeSource = null;
+  let mouthInterval = null;
+
+  function getAudioContext() {
+    return SoundFx.getAudioContext();
+  }
+
+  // 1. Decode Blob into AudioBuffer
+  async function decodeAudioBlob(blob) {
+    const ac = getAudioContext();
+    if (!ac) throw new Error('AudioContext unavailable');
+    const arrayBuffer = await blob.arrayBuffer();
+    return await ac.decodeAudioData(arrayBuffer);
+  }
+
+  // 2. Offline AudioContext DSP: Warps pitch & frequency into genuine cartoon voices
+  async function renderVoiceEffect(audioBuffer, effectType) {
+    if (!effectType || effectType === 'normal') {
+      return audioBuffer;
+    }
+
+    let rate = 1.0;
+    if (effectType === 'tom') rate = 1.45;       // Talking Tom squeaky chipmunk
+    else if (effectType === 'shinchan') rate = 1.30; // Naughty Shinchan cheeky pitch
+    else if (effectType === 'bhalu') rate = 0.76;    // Deep funny cuddly giant bear
+    else if (effectType === 'robo') rate = 1.05;     // Electronic droid
+
+    const targetLength = Math.max(1, Math.ceil(audioBuffer.length / rate));
+    const offlineCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(
+      audioBuffer.numberOfChannels,
+      targetLength,
+      audioBuffer.sampleRate
+    );
+
+    const source = offlineCtx.createBufferSource();
+    source.buffer = audioBuffer;
+    source.playbackRate.value = rate;
+
+    if (effectType === 'tom') {
+      // Talking Tom: High-pass to strip chest rumble + presence boost
+      const highpass = offlineCtx.createBiquadFilter();
+      highpass.type = 'highpass';
+      highpass.frequency.setValueAtTime(320, offlineCtx.currentTime);
+
+      const boost = offlineCtx.createBiquadFilter();
+      boost.type = 'peaking';
+      boost.frequency.setValueAtTime(2600, offlineCtx.currentTime);
+      boost.gain.setValueAtTime(5.0, offlineCtx.currentTime);
+
+      source.connect(highpass);
+      highpass.connect(boost);
+      boost.connect(offlineCtx.destination);
+    } else if (effectType === 'shinchan') {
+      // Shinchan: Playful bright mid-high peak
+      const midBoost = offlineCtx.createBiquadFilter();
+      midBoost.type = 'peaking';
+      midBoost.frequency.setValueAtTime(1800, offlineCtx.currentTime);
+      midBoost.gain.setValueAtTime(6.0, offlineCtx.currentTime);
+
+      source.connect(midBoost);
+      midBoost.connect(offlineCtx.destination);
+    } else if (effectType === 'bhalu') {
+      // Bhalu Dada: Deep bass resonance & lowpass warmth
+      const bassBoost = offlineCtx.createBiquadFilter();
+      bassBoost.type = 'lowshelf';
+      bassBoost.frequency.setValueAtTime(300, offlineCtx.currentTime);
+      bassBoost.gain.setValueAtTime(8.0, offlineCtx.currentTime);
+
+      const lowpass = offlineCtx.createBiquadFilter();
+      lowpass.type = 'lowpass';
+      lowpass.frequency.setValueAtTime(1400, offlineCtx.currentTime);
+
+      source.connect(bassBoost);
+      bassBoost.connect(lowpass);
+      lowpass.connect(offlineCtx.destination);
+    } else if (effectType === 'robo') {
+      // Robo Chintu: Metallic droid bandpass filter
+      const bandpass = offlineCtx.createBiquadFilter();
+      bandpass.type = 'bandpass';
+      bandpass.frequency.setValueAtTime(1150, offlineCtx.currentTime);
+      bandpass.Q.setValueAtTime(5.0, offlineCtx.currentTime);
+
+      const gain = offlineCtx.createGain();
+      gain.gain.setValueAtTime(2.2, offlineCtx.currentTime);
+
+      source.connect(bandpass);
+      bandpass.connect(gain);
+      gain.connect(offlineCtx.destination);
+    } else {
+      source.connect(offlineCtx.destination);
+    }
+
+    source.start(0);
+    return await offlineCtx.startRendering();
+  }
+
+  // 3. AudioBuffer to 16-bit PCM WAV Blob
+  function audioBufferToWavBlob(abuffer) {
+    const numOfChan = abuffer.numberOfChannels;
+    const length = abuffer.length * numOfChan * 2 + 44;
+    const out = new DataView(new ArrayBuffer(length));
+    const channels = [];
+    const sampleRate = abuffer.sampleRate;
+    let offset = 0;
+    let pos = 0;
+
+    function setUint16(data) {
+      out.setUint16(pos, data, true);
+      pos += 2;
+    }
+    function setUint32(data) {
+      out.setUint32(pos, data, true);
+      pos += 4;
+    }
+
+    // RIFF identifier
+    setUint32(0x46464952); // "RIFF"
+    setUint32(length - 8);
+    setUint32(0x45564157); // "WAVE"
+
+    // fmt sub-chunk
+    setUint32(0x20746d66); // "fmt "
+    setUint32(16);         // SubChunk1Size = 16
+    setUint16(1);          // AudioFormat 1 = PCM
+    setUint16(numOfChan);
+    setUint32(sampleRate);
+    setUint32(sampleRate * 2 * numOfChan);
+    setUint16(numOfChan * 2);
+    setUint16(16);         // 16 bits per sample
+
+    // data sub-chunk
+    setUint32(0x61746164); // "data"
+    setUint32(length - pos - 4);
+
+    for (let i = 0; i < abuffer.numberOfChannels; i++) {
+      channels.push(abuffer.getChannelData(i));
+    }
+
+    while (offset < abuffer.length) {
+      for (let i = 0; i < numOfChan; i++) {
+        let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+        out.setInt16(pos, sample, true);
+        pos += 2;
+      }
+      offset++;
+    }
+
+    return new Blob([out.buffer], { type: 'audio/wav' });
+  }
+
+  // 4. Play AudioBuffer with real-time audio amplitude Lip-Sync
+  function playBufferWithLipSync(audioBuffer, onMouthToggle, onEnded) {
+    stopPlayback();
+
+    const ac = getAudioContext();
+    if (!ac) {
+      if (onEnded) onEnded();
+      return;
+    }
+
+    const source = ac.createBufferSource();
+    source.buffer = audioBuffer;
+
+    const analyser = ac.createAnalyser();
+    analyser.fftSize = 256;
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    source.connect(analyser);
+    analyser.connect(ac.destination);
+
+    // Amplitude-based real-time lip-sync
+    mouthInterval = setInterval(() => {
+      analyser.getByteFrequencyData(dataArray);
+      let sum = 0;
+      for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+      const avg = sum / dataArray.length;
+      if (onMouthToggle) {
+        onMouthToggle(avg > 18);
+      }
+    }, 60);
+
+    source.onended = () => {
+      stopPlayback();
+      if (onMouthToggle) onMouthToggle(false);
+      if (onEnded) onEnded();
+    };
+
+    activeSource = source;
+    source.start(0);
+  }
+
+  function stopPlayback() {
+    if (activeSource) {
+      try {
+        activeSource.stop();
+      } catch (e) {}
+      activeSource = null;
+    }
+    if (mouthInterval) {
+      clearInterval(mouthInterval);
+      mouthInterval = null;
+    }
+  }
+
+  return {
+    decodeAudioBlob,
+    renderVoiceEffect,
+    audioBufferToWavBlob,
+    playBufferWithLipSync,
+    stopPlayback,
   };
 })();
 

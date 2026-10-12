@@ -250,6 +250,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (index >= wishes.length) index = wishes.length - 1;
     currentWishIndex = index;
 
+    CharacterManager.stopSpeaking();
+    VoiceChanger.stopPlayback();
+
     const wish = wishes[currentWishIndex];
     const char = CharacterManager.get(wish.characterId);
 
@@ -289,20 +292,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function playWishAudio(wish, char) {
     CharacterManager.stopSpeaking();
+    VoiceChanger.stopPlayback();
 
     if (wish.voiceType === 'audio' && wish.audioUrl) {
-      // Play recorded real audio note
-      const audio = new Audio(wish.audioUrl);
-      let mouthTimer = setInterval(() => {
-        const isOpen = Math.random() > 0.5;
-        cartoonAvatarStage.innerHTML = char.renderSvg(isOpen);
-      }, 160);
-
-      audio.onended = () => {
-        clearInterval(mouthTimer);
-        cartoonAvatarStage.innerHTML = char.renderSvg(false);
-      };
-      audio.play().catch((e) => console.log('Audio autoplay blocked, user can tap replay', e));
+      // Play recorded cartoon audio note with real-time lip-sync!
+      const ac = SoundFx.getAudioContext();
+      fetch(wish.audioUrl)
+        .then((r) => {
+          if (!r.ok) throw new Error('Audio fetch failed: ' + r.status);
+          return r.arrayBuffer();
+        })
+        .then((buf) => {
+          if (!ac) throw new Error('No AudioContext available');
+          return ac.decodeAudioData(buf);
+        })
+        .then((audioBuffer) => {
+          VoiceChanger.playBufferWithLipSync(
+            audioBuffer,
+            (isMouthOpen) => {
+              cartoonAvatarStage.innerHTML = char.renderSvg(isMouthOpen);
+            },
+            () => {
+              cartoonAvatarStage.innerHTML = char.renderSvg(false);
+            }
+          );
+        })
+        .catch((err) => {
+          console.warn('Web Audio decode fallback to HTML5 Audio', err);
+          const audio = new Audio(wish.audioUrl);
+          let mouthTimer = setInterval(() => {
+            const isOpen = Math.random() > 0.5;
+            cartoonAvatarStage.innerHTML = char.renderSvg(isOpen);
+          }, 160);
+          audio.onended = () => {
+            clearInterval(mouthTimer);
+            cartoonAvatarStage.innerHTML = char.renderSvg(false);
+          };
+          audio.play().catch((e) => console.log('Audio autoplay blocked, user can tap replay', e));
+        });
     } else {
       // Use Web Speech API cartoon voice with Hindi intro & SoundFx
       CharacterManager.speak(
@@ -382,6 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startFinale() {
     CharacterManager.stopSpeaking();
+    VoiceChanger.stopPlayback();
     SoundFx.cheer();
     AppUtils.showerConfetti();
 

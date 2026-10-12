@@ -46,11 +46,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const stopAudioBtn = document.getElementById('stopAudioBtn');
   const recordingTimer = document.getElementById('recordingTimer');
   const audioPreview = document.getElementById('audioPreview');
+  const voiceFilterControls = document.getElementById('voiceFilterControls');
+  const voiceChips = document.querySelectorAll('.voice-chip');
+  const previewCartoonVoiceBtn = document.getElementById('previewCartoonVoiceBtn');
+  const rerecordAudioBtn = document.getElementById('rerecordAudioBtn');
+  const testVoiceBox = document.getElementById('testVoiceBox');
   const successModal = document.getElementById('successModal');
   const viewShowtimeBtn = document.getElementById('viewShowtimeBtn');
 
   // State
-  let selectedCharacterId = 'veer';
+  let selectedCharacterId = 'shinchan';
   let userImage = null;
   let activeStickers = []; // [{ id, x, y, size }]
   let selectedStickerIndex = -1;
@@ -59,6 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let mediaRecorder = null;
   let audioChunks = [];
   let recordedAudioBlob = null;
+  let rawAudioBuffer = null;
+  let processedAudioBuffer = null;
+  let processedWavBlob = null;
+  let currentEffect = 'shinchan';
+  let isVoicePreviewPlaying = false;
   let recordInterval = null;
   let recordSeconds = 0;
   let cameraStream = null;
@@ -109,6 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedCharacterId = c.id;
       document.querySelectorAll('.character-card').forEach((el) => el.classList.remove('active'));
       card.classList.add('active');
+
+      // Sync cartoon voice filter chip to match selected character
+      let matchedEffect = 'tom';
+      if (c.id === 'shinchan') matchedEffect = 'shinchan';
+      else if (c.id === 'tom') matchedEffect = 'tom';
+      else if (c.id === 'bhalu') matchedEffect = 'bhalu';
+      else if (c.id === 'robo') matchedEffect = 'robo';
+      updateVoiceEffect(matchedEffect);
     });
     characterGrid.appendChild(card);
   });
@@ -384,32 +402,102 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  // 7. Voice Type Toggle (Cartoon Speech vs Real Audio Note)
+  // 7. Voice Type Toggle (Talking Tom Voice Changer vs Cartoon Soundbite)
   voiceTypeRadios.forEach((r) => {
     r.addEventListener('change', () => {
       SoundFx.click();
       if (r.value === 'audio') {
         audioRecorderSection.style.display = 'block';
+        if (testVoiceBox) testVoiceBox.style.display = 'none';
         testVoiceBtn.style.display = 'none';
       } else {
         audioRecorderSection.style.display = 'none';
+        if (testVoiceBox) testVoiceBox.style.display = 'block';
         testVoiceBtn.style.display = 'inline-flex';
       }
     });
   });
 
-  // 8. Audio Recording
+  // Voice Effect Filter Logic
+  async function updateVoiceEffect(effectType) {
+    currentEffect = effectType || 'tom';
+    voiceChips.forEach((chip) => {
+      chip.classList.toggle('active', chip.dataset.effect === currentEffect);
+    });
+
+    if (rawAudioBuffer) {
+      if (previewCartoonVoiceBtn) {
+        previewCartoonVoiceBtn.disabled = true;
+        previewCartoonVoiceBtn.textContent = '⏳ Warping Voice...';
+      }
+      try {
+        processedAudioBuffer = await VoiceChanger.renderVoiceEffect(rawAudioBuffer, currentEffect);
+        processedWavBlob = VoiceChanger.audioBufferToWavBlob(processedAudioBuffer);
+        if (previewCartoonVoiceBtn) {
+          previewCartoonVoiceBtn.disabled = false;
+          previewCartoonVoiceBtn.textContent = '▶️ Play My Cartoon Voice! 😂';
+        }
+      } catch (err) {
+        console.error('Error rendering voice effect:', err);
+        processedAudioBuffer = rawAudioBuffer;
+        processedWavBlob = VoiceChanger.audioBufferToWavBlob(rawAudioBuffer);
+        if (previewCartoonVoiceBtn) {
+          previewCartoonVoiceBtn.disabled = false;
+          previewCartoonVoiceBtn.textContent = '▶️ Play My Voice';
+        }
+      }
+    }
+  }
+
+  // Voice Filter Chips Click
+  voiceChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      SoundFx.click();
+      VoiceChanger.stopPlayback();
+      if (isVoicePreviewPlaying && previewCartoonVoiceBtn) {
+        isVoicePreviewPlaying = false;
+        previewCartoonVoiceBtn.textContent = '▶️ Play My Cartoon Voice! 😂';
+      }
+      updateVoiceEffect(chip.dataset.effect);
+    });
+  });
+
+  // 8. Audio Recording & Voice Transformation
   recordAudioBtn.addEventListener('click', async () => {
     SoundFx.init();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioChunks = [];
       mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
-      mediaRecorder.onstop = () => {
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) audioChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = async () => {
         recordedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-        audioPreview.src = URL.createObjectURL(recordedAudioBlob);
-        audioPreview.style.display = 'block';
+        if (audioPreview) {
+          audioPreview.src = URL.createObjectURL(recordedAudioBlob);
+        }
+
+        if (voiceFilterControls) voiceFilterControls.style.display = 'block';
+        if (previewCartoonVoiceBtn) {
+          previewCartoonVoiceBtn.disabled = true;
+          previewCartoonVoiceBtn.textContent = '⏳ Warping to Cartoon Voice...';
+        }
+
+        try {
+          rawAudioBuffer = await VoiceChanger.decodeAudioBlob(recordedAudioBlob);
+          await updateVoiceEffect(currentEffect);
+          SoundFx.cartoonLaugh();
+          AppUtils.showToast('✨ Voice warped into cartoon effect! Tap Play below to laugh! 😂');
+        } catch (err) {
+          console.error('Audio decode error', err);
+          AppUtils.showToast('Audio note recorded! 🎤');
+          if (previewCartoonVoiceBtn) {
+            previewCartoonVoiceBtn.disabled = false;
+            previewCartoonVoiceBtn.textContent = '▶️ Play My Voice';
+          }
+        }
       };
 
       mediaRecorder.start();
@@ -417,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stopAudioBtn.style.display = 'inline-flex';
       recordSeconds = 0;
       recordingTimer.textContent = '0:00';
-      recordingTimer.style.display = 'inline';
+      recordingTimer.style.display = 'inline-flex';
 
       recordInterval = setInterval(() => {
         recordSeconds++;
@@ -429,7 +517,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }, 1000);
     } catch (err) {
-      AppUtils.showToast('Microphone permission denied.');
+      console.error(err);
+      AppUtils.showToast('Microphone access denied or unavailable.');
     }
   });
 
@@ -439,11 +528,91 @@ document.addEventListener('DOMContentLoaded', () => {
       mediaRecorder.stream.getTracks().forEach((t) => t.stop());
     }
     clearInterval(recordInterval);
-    recordAudioBtn.style.display = 'inline-flex';
+    recordAudioBtn.style.display = 'none';
     stopAudioBtn.style.display = 'none';
+    recordingTimer.style.display = 'none';
     SoundFx.boing();
-    AppUtils.showToast('Audio note recorded! 🎤');
   });
+
+  // Preview Cartoon Voice Button with Real-time Lip-Sync
+  if (previewCartoonVoiceBtn) {
+    previewCartoonVoiceBtn.addEventListener('click', () => {
+      SoundFx.init();
+      if (isVoicePreviewPlaying) {
+        VoiceChanger.stopPlayback();
+        isVoicePreviewPlaying = false;
+        previewCartoonVoiceBtn.textContent = '▶️ Play My Cartoon Voice! 😂';
+        const activeCard = document.querySelector('.character-card.active');
+        const avatarEl = activeCard ? activeCard.querySelector('.char-avatar') : null;
+        if (avatarEl) {
+          const char = CharacterManager.get(selectedCharacterId);
+          avatarEl.innerHTML = char.renderSvg(false);
+        }
+        return;
+      }
+
+      const bufferToPlay = processedAudioBuffer || rawAudioBuffer;
+      if (!bufferToPlay) {
+        AppUtils.showToast('Kripya pehle aawaz record karein! 🎤');
+        return;
+      }
+
+      isVoicePreviewPlaying = true;
+      previewCartoonVoiceBtn.textContent = '⏹️ Stop Playing';
+
+      const activeCard = document.querySelector('.character-card.active');
+      const avatarEl = activeCard ? activeCard.querySelector('.char-avatar') : null;
+      const char = CharacterManager.get(selectedCharacterId);
+
+      VoiceChanger.playBufferWithLipSync(
+        bufferToPlay,
+        (isMouthOpen) => {
+          if (avatarEl) {
+            avatarEl.innerHTML = char.renderSvg(isMouthOpen);
+          }
+        },
+        () => {
+          isVoicePreviewPlaying = false;
+          previewCartoonVoiceBtn.textContent = '▶️ Play My Cartoon Voice! 😂';
+          if (avatarEl) {
+            avatarEl.innerHTML = char.renderSvg(false);
+          }
+        }
+      );
+    });
+  }
+
+  // Re-record Voice Button
+  if (rerecordAudioBtn) {
+    rerecordAudioBtn.addEventListener('click', () => {
+      SoundFx.click();
+      VoiceChanger.stopPlayback();
+      rawAudioBuffer = null;
+      processedAudioBuffer = null;
+      processedWavBlob = null;
+      recordedAudioBlob = null;
+      isVoicePreviewPlaying = false;
+
+      if (voiceFilterControls) voiceFilterControls.style.display = 'none';
+      recordAudioBtn.style.display = 'inline-flex';
+      stopAudioBtn.style.display = 'none';
+      recordingTimer.style.display = 'none';
+
+      if (previewCartoonVoiceBtn) {
+        previewCartoonVoiceBtn.disabled = false;
+        previewCartoonVoiceBtn.textContent = '▶️ Play My Cartoon Voice! 😂';
+      }
+
+      const activeCard = document.querySelector('.character-card.active');
+      const avatarEl = activeCard ? activeCard.querySelector('.char-avatar') : null;
+      if (avatarEl) {
+        const char = CharacterManager.get(selectedCharacterId);
+        avatarEl.innerHTML = char.renderSvg(false);
+      }
+
+      AppUtils.showToast('Microphone ready! Tap Start Recording to speak. 🎙️');
+    });
+  }
 
   // 9. Submit Form
   wishForm.addEventListener('submit', async (e) => {
@@ -457,6 +626,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const selectedVoiceType = document.querySelector('input[name="voiceType"]:checked').value;
+
+    if (selectedVoiceType === 'audio' && !processedWavBlob && !recordedAudioBlob) {
+      AppUtils.showToast('Kripya pehle apni aawaz record karein ya Cartoon Soundbite (Text) option chunein! 🎤');
+      return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.innerHTML = '⏳ Submitting Wish...';
 
@@ -464,8 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedStickerIndex = -1;
     drawCanvas();
     const finalSelfieBase64 = stickerCanvas.toDataURL('image/png');
-
-    const selectedVoiceType = document.querySelector('input[name="voiceType"]:checked').value;
 
     const formData = new FormData();
     formData.append('partyId', partyId);
@@ -476,8 +650,10 @@ document.addEventListener('DOMContentLoaded', () => {
     formData.append('voiceType', selectedVoiceType);
     formData.append('selfieBase64', finalSelfieBase64);
 
-    if (selectedVoiceType === 'audio' && recordedAudioBlob) {
-      formData.append('audio', recordedAudioBlob, 'voice.webm');
+    if (selectedVoiceType === 'audio') {
+      const finalBlob = processedWavBlob || recordedAudioBlob;
+      const filename = processedWavBlob ? 'voice.wav' : 'voice.webm';
+      formData.append('audio', finalBlob, filename);
     }
 
     try {
