@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send Secret Wish Scroll | ToonHero</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/creator.css" />
+  </head>
+  <body>
+    <div class="app-container" style="max-width: 680px;">
+      <!-- Top Nav -->
+      <nav class="app-nav">
+        <a href="/" class="btn btn-secondary" style="font-size: 0.88rem; padding: 6px 14px;">
+          🏠 Back to Home
+        </a>
+        <div class="nav-brand" style="font-size: 1.15rem;">
+          <span>📜 Secret Wish Scroll</span>
+        </div>
+      </nav>
+
+      <!-- Scroll Card Form -->
+      <main class="form-card" style="padding: 28px;">
+        <div style="text-align: center; margin-bottom: 22px;">
+          <span style="font-size: 3rem; display: block; margin-bottom: 6px;">📜✨</span>
+          <h1 style="font-size: 1.8rem; color: #1e1b4b; margin-bottom: 6px;">
+            <span id="kidName">Hero</span> Ke Liye Secret Scroll!
+          </h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Aapka message aur photo unki Animated Storybook Movie ke Chapter 4 mein magic treasure ban kar khulega!
+          </p>
+        </div>
+
+        <form id="scrollForm">
+          <div class="input-row-2">
+            <div class="form-group">
+              <label class="form-label" for="senderName">Aapka Naam *</label>
+              <input type="text" id="senderName" class="form-input" placeholder="e.g. Chacha, Dadi, Rohan" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="relation">Rishta / Relation</label>
+              <input type="text" id="relation" class="form-input" placeholder="e.g. Chacha, Bua, Dadi, Friend" />
+            </div>
+          </div>
+
+          <!-- Wish Message -->
+          <div class="form-group">
+            <label class="form-label" for="messageText">💌 Birthday Wish / Aashirwaad</label>
+            <textarea id="messageText" class="form-input" rows="3" placeholder="Apna pyara sa message likhein..."></textarea>
+            
+            <div style="margin-top: 8px;">
+              <span style="font-size: 0.8rem; font-weight: 800; color: #64748b;">Quick ideas:</span>
+              <div id="quickWishesContainer" style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Photo / Selfie -->
+          <div class="form-group">
+            <label class="form-label">📸 Apni Photo / Selfie (Optional)</label>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <label class="btn btn-primary" style="font-size: 0.88rem; padding: 8px 14px; cursor: pointer;">
+                📁 Upload Photo
+                <input type="file" id="photoInput" accept="image/*" style="display: none;" />
+              </label>
+              <button type="button" id="openCameraBtn" class="btn btn-secondary" style="font-size: 0.88rem; padding: 8px 14px;">
+                📸 Selfie Camera
+              </button>
+            </div>
+
+            <!-- Camera Box -->
+            <div id="cameraBox" class="camera-box">
+              <video id="cameraVideo" autoplay playsinline></video>
+              <div style="margin-top: 8px;">
+                <button type="button" id="snapBtn" class="btn btn-gold" style="font-size: 0.88rem; padding: 6px 14px;">
+                  ✨ Snap Photo
+                </button>
+              </div>
+            </div>
+
+            <!-- Photo Preview -->
+            <div style="margin-top: 12px; text-align: center;">
+              <img id="previewPhoto" src="" alt="Preview" style="display: none; width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto; border: 3px solid var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div style="margin-top: 24px;">
+            <button type="submit" id="submitScrollBtn" class="btn btn-primary pulsing" style="width: 100%; padding: 14px; font-size: 1.15rem;">
+              📜 Send Secret Wish Scroll!
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal-overlay">
+      <div class="modal-card">
+        <div style="font-size: 3.5rem; margin-bottom: 12px;">✨📜✨</div>
+        <h2 style="color: var(--primary); font-size: 1.6rem; margin-bottom: 8px;">
+          Scroll Seal Ho Gaya! 🎉
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 22px;">
+          Aapka wish aur photo storybook ke Chapter 4 mein magic treasure ban kar add ho chuka hai!
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button id="viewStoryBtn" class="btn btn-primary" style="font-size: 1.05rem; padding: 12px;">
+            🎬 Watch Grand Story Theater
+          </button>
+          <a href="/" class="btn btn-secondary">
+            🏠 Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/sound.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/scroll.js"></script>
+  </body>
+</html>

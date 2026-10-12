@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grand Birthday Story Theater | ToonHero</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/story.css" />
+  </head>
+  <body>
+    <div class="app-container story-theater-shell">
+      <!-- Top Navigation & Mode Switcher -->
+      <header class="theater-topbar">
+        <div class="story-badge-cluster">
+          <a href="/" class="btn btn-secondary" style="font-size: 0.88rem; padding: 6px 14px;">
+            🏠 Home
+          </a>
+          <span id="chapterPill" class="chapter-indicator-pill">Chapter 1 of 5</span>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <div class="mode-switcher-group">
+            <button type="button" id="theaterModeBtn" class="mode-btn active">🎬 Movie Theater</button>
+            <button type="button" id="bookModeBtn" class="mode-btn">📖 Storybook</button>
+          </div>
+
+          <button type="button" id="openScrollsVaultBtn" class="btn btn-gold" style="font-size: 0.88rem; padding: 6px 14px;">
+            📜 Secret Scrolls
+          </button>
+          <button type="button" id="printStoryBtn" class="btn btn-secondary" style="font-size: 0.88rem; padding: 6px 14px;">
+            🖨️ Print
+          </button>
+        </div>
+      </header>
+
+      <!-- 1. The Movie Stage Theater (Widescreen 16:9 Canvas) -->
+      <main id="movieStageBox" class="movie-stage-box">
+        <div id="sceneViewport" class="scene-viewport scene-bg-city-morning">
+          <!-- Floating Comic Speech Bubble -->
+          <div class="speech-bubble-anchor">
+            <div class="comic-speech-bubble">
+              <div id="bubbleSpeaker" class="comic-speaker-name">Hero Aarav</div>
+              <div id="bubbleText" class="comic-speaker-dialogue">Main ready hoon! Let's go!</div>
+            </div>
+          </div>
+
+          <!-- Interactive Challenge / Power Orbs Layer -->
+          <div id="interactiveLayer" class="interactive-overlay">
+            <!-- Dynamic interactive targets rendered here -->
+          </div>
+
+          <!-- Animated Stage Actors (Hero + Sidekick) -->
+          <div class="actors-stage">
+            <div id="actorHero" class="actor-wrap actor-hero" style="width: 190px; height: 230px;" title="Tap me for superpowers!">
+              <!-- Rendered dynamically by HeroRig -->
+            </div>
+            <div id="actorCompanion" class="actor-wrap actor-companion" style="width: 140px; height: 160px;" title="Tap me for a giggle!">
+              <!-- Rendered dynamically by HeroRig -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Narration Subtitles Banner -->
+        <div class="narration-banner">
+          <div id="voiceWave" class="speaker-voice-wave">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+          <div id="narrationText" class="narration-text">
+            Suno suno! Aaj ka din aam din nahi hai! Hamare pyare aur bahadur Aarav ka 5th birthday hai!
+          </div>
+        </div>
+      </main>
+
+      <!-- 2. Dual-Page Illustrated Storybook Mode (Shown when Book mode active) -->
+      <section id="storybookDualPage" class="storybook-dual-page">
+        <div id="bookPagesContainer" class="book-pages-container">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- Bottom Theater Controls -->
+      <footer class="theater-controls">
+        <div class="playback-controls">
+          <button type="button" id="togglePlayMovieBtn" class="btn btn-primary pulsing" style="padding: 10px 22px;">
+            ▶️ Auto-Play Movie
+          </button>
+          <button type="button" id="prevChapterBtn" class="btn btn-secondary" style="padding: 8px 14px;">
+            ⏮️ Prev
+          </button>
+          <button type="button" id="nextChapterBtn" class="btn btn-secondary" style="padding: 8px 14px;">
+            Next ⏭️
+          </button>
+          <button type="button" id="replaySceneBtn" class="btn btn-secondary" style="padding: 8px 12px;" title="Replay Scene">
+            🔄
+          </button>
+        </div>
+
+        <!-- Chapter Timeline Stepper -->
+        <div id="chapterDotsContainer" class="chapter-stepper-dots">
+          <!-- Stepper dots 1 to 5 -->
+        </div>
+
+        <!-- Audio Settings Toggles -->
+        <div style="display: flex; gap: 8px;">
+          <button type="button" id="bgmToggleBtn" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 12px; color: #10b981;">
+            🎵 Music: ON
+          </button>
+          <button type="button" id="voiceToggleBtn" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 12px; color: #10b981;">
+            🗣️ Voice: ON
+          </button>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Family Scrolls Vault Modal -->
+    <div id="scrollsModal" class="modal-overlay">
+      <div class="modal-card" style="max-width: 780px;">
+        <h2 style="color: var(--primary); font-size: 1.6rem; margin-bottom: 6px;">
+          📜 The Vault of Secret Family Scrolls!
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px;">
+          Family members & relatives ke pyare aashirwaad aur wishes:
+        </p>
+
+        <div id="scrollsVaultGrid" class="scrolls-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+          <a id="inviteScrollWhatsAppBtn" target="_blank" class="btn btn-whatsapp">
+            💬 Invite Relatives on WhatsApp
+          </a>
+          <button type="button" id="closeScrollsModalBtn" class="btn btn-secondary">
+            ✖️ Close Vault
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/sound.js"></script>
+    <script src="/js/hero-rig.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/story-player.js"></script>
+  </body>
+</html>
