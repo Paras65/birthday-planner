@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp Birthday Reel | ToonWish</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/reel.css" />
+  </head>
+  <body>
+    <div class="app-container reel-page-shell">
+      <!-- Top Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 430px; margin-bottom: 12px;">
+        <a href="/" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+          🏠 Home
+        </a>
+        <div style="display: flex; gap: 8px;">
+          <button id="soundToggleBtn" class="sound-toggle-badge">
+            🎵 Music: ON
+          </button>
+        </div>
+      </div>
+
+      <!-- 9:16 Phone Frame Mockup -->
+      <div class="phone-mockup-wrapper">
+        <!-- Canvas Viewport -->
+        <canvas id="reelCanvas" class="reel-canvas"></canvas>
+
+        <!-- Tap Zones for Stories Navigation -->
+        <div class="reel-tap-overlay">
+          <div id="tapLeft" class="tap-zone-left" title="Tap for previous wish"></div>
+          <div id="tapCenter" class="tap-zone-center" title="Tap to pause/play"></div>
+          <div id="tapRight" class="tap-zone-right" title="Tap for next wish"></div>
+        </div>
+
+        <!-- Floating Badges Top Overlay -->
+        <div class="reel-top-overlay">
+          <div id="kidNameBadge" class="kid-reel-badge">
+            <span>🎂</span> <span id="kidReelName">Birthday Reel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Action Bar -->
+      <div class="reel-action-bar">
+        <button type="button" id="downloadVideoBtn" class="btn btn-primary">
+          📥 Download Video (MP4/WebM)
+        </button>
+        <a id="shareWhatsAppBtn" target="_blank" class="btn btn-whatsapp">
+          💬 Share on WhatsApp
+        </a>
+        <a id="addWishBtn" class="btn btn-secondary">
+          ➕ Add Wish & Photo
+        </a>
+        <button type="button" id="replayBtn" class="btn btn-secondary">
+          🔄 Replay
+        </button>
+      </div>
+    </div>
+
+    <!-- Export Progress Modal -->
+    <div id="exportModal" class="modal-overlay">
+      <div class="modal-card">
+        <div style="font-size: 3.5rem; margin-bottom: 8px;">🎬✨</div>
+        <h2 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 6px;">
+          WhatsApp Video Render Ho Raha Hai...
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">
+          Sabhi family photos, comments aur party music ko ek high-quality video mein compile kiya ja raha hai...
+        </p>
+
+        <div class="export-progress-bar">
+          <div id="exportProgressFill" class="export-progress-fill"></div>
+        </div>
+
+        <p id="exportStatusText" style="font-size: 0.9rem; font-weight: 700; color: #f59e0b;">
+          Rendering scenes...
+        </p>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/common.js"></script>
+    <script src="/js/party-beats.js"></script>
+    <script src="/js/reel-engine.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const partyId = AppUtils.getQueryParam('id');
+
+        if (!partyId) {
+          document.body.innerHTML = `
+            <div style="text-align: center; padding: 60px 20px;">
+              <h2>⚠️ Reel Link Missing</h2>
+              <p style="color: #64748b; margin: 16px 0;">Kripya Home page se Birthday Reel open karein.</p>
+              <a href="/" class="btn btn-primary">🏠 Go to Home</a>
+            </div>
+          `;
+          return;
+        }
+
+        const reelCanvas = document.getElementById('reelCanvas');
+        const tapLeft = document.getElementById('tapLeft');
+        const tapCenter = document.getElementById('tapCenter');
+        const tapRight = document.getElementById('tapRight');
+        const soundToggleBtn = document.getElementById('soundToggleBtn');
+        const kidReelName = document.getElementById('kidReelName');
+        const downloadVideoBtn = document.getElementById('downloadVideoBtn');
+        const shareWhatsAppBtn = document.getElementById('shareWhatsAppBtn');
+        const addWishBtn = document.getElementById('addWishBtn');
+        const replayBtn = document.getElementById('replayBtn');
+        const exportModal = document.getElementById('exportModal');
+        const exportProgressFill = document.getElementById('exportProgressFill');
+        const exportStatusText = document.getElementById('exportStatusText');
+
+        let isSoundOn = true;
+        let isPaused = false;
+        let partyData = null;
+        let wishesData = [];
+
+        // 1. Fetch Party & Wishes
+        fetch(`/api/parties/${partyId}`)
+          .then((r) => {
+            if (!r.ok) throw new Error('Party not found');
+            return r.json();
+          })
+          .then((data) => {
+            partyData = data.party;
+            wishesData = data.wishes || [];
+
+            kidReelName.textContent = `${partyData.kidName}'s Birthday`;
+            addWishBtn.href = `/wish?id=${partyId}`;
+
+            const wishUrl = `${window.location.origin}/wish?id=${partyId}`;
+            const reelUrl = `${window.location.origin}/reel?id=${partyId}`;
+            const shareMsg = `🎂 Namaste! Humare pyare ${partyData.kidName} ka Birthday WhatsApp Video Reel ready hai! 🎬✨\nAap bhi dekhein aur apni wish add karein:`;
+            shareWhatsAppBtn.href = AppUtils.getWhatsAppShareUrl(shareMsg, reelUrl);
+
+            // Initialize Reel Engine
+            ReelEngine.init(reelCanvas, partyData, wishesData);
+            ReelEngine.startPlayback();
+          })
+          .catch((err) => {
+            console.error(err);
+            AppUtils.showToast('Could not load birthday reel.');
+          });
+
+        // 2. Tap zones (Instagram/WhatsApp Story navigation)
+        tapLeft.addEventListener('click', () => {
+          ReelEngine.prevScene();
+        });
+
+        tapRight.addEventListener('click', () => {
+          ReelEngine.nextScene();
+        });
+
+        tapCenter.addEventListener('click', () => {
+          isPaused = !isPaused;
+          if (isPaused) {
+            ReelEngine.pausePlayback();
+            AppUtils.showToast('⏸️ Paused');
+          } else {
+            ReelEngine.startPlayback();
+          }
+        });
+
+        // 3. Sound toggle
+        soundToggleBtn.addEventListener('click', () => {
+          isSoundOn = !isSoundOn;
+          if (isSoundOn) {
+            PartyBeats.startPartyLoop();
+            soundToggleBtn.textContent = '🎵 Music: ON';
+            soundToggleBtn.style.color = '#ffffff';
+          } else {
+            PartyBeats.stopPartyLoop();
+            soundToggleBtn.textContent = '🔇 Music: OFF';
+            soundToggleBtn.style.color = '#94a3b8';
+          }
+        });
+
+        // 4. Replay
+        replayBtn.addEventListener('click', () => {
+          ReelEngine.resetPlayback();
+          ReelEngine.startPlayback();
+        });
+
+        // 5. Download Video for WhatsApp
+        downloadVideoBtn.addEventListener('click', async () => {
+          PartyBeats.init();
+          exportModal.style.display = 'flex';
+          exportProgressFill.style.width = '30%';
+          exportStatusText.textContent = 'Recording video scenes with party music...';
+
+          let progress = 30;
+          const progInterval = setInterval(() => {
+            progress = Math.min(95, progress + 10);
+            exportProgressFill.style.width = `${progress}%`;
+          }, 800);
+
+          try {
+            ReelEngine.recordVideo(
+              (p) => {},
+              (blob) => {
+                clearInterval(progInterval);
+                exportProgressFill.style.width = '100%';
+                exportStatusText.textContent = 'Video ready! Downloading now...';
+
+                setTimeout(() => {
+                  exportModal.style.display = 'none';
+
+                  // Download file
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${partyData.kidName}-birthday-reel.webm`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+
+                  AppUtils.showerConfetti();
+                  AppUtils.showToast('🎉 Video downloaded! Forward it to WhatsApp Status & Groups! 📲');
+                }, 700);
+              }
+            );
+          } catch (err) {
+            clearInterval(progInterval);
+            exportModal.style.display = 'none';
+            console.error('Video recording failed', err);
+            AppUtils.showToast('Could not record video on this device.');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

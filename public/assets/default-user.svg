@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#fb7185"/>
+    </linearGradient>
+    <radialGradient id="faceGrad" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="100%" stop-color="#fba86d"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="url(#bgGrad)"/>
+  <circle cx="100" cy="100" r="90" fill="#ffffff" opacity="0.15"/>
+  <!-- Torso -->
+  <path d="M40,190 C40,140 70,135 100,135 C130,135 160,140 160,190 Z" fill="#ffffff" opacity="0.9"/>
+  <!-- Head -->
+  <circle cx="100" cy="85" r="42" fill="url(#faceGrad)"/>
+  <!-- Hair -->
+  <path d="M60,80 C60,45 80,40 100,40 C120,40 140,45 140,80 C130,60 115,55 100,55 C85,55 70,60 60,80 Z" fill="#451a03"/>
+  <!-- Big Warm Smile -->
+  <path d="M85,96 Q100,110 115,96" stroke="#991b1b" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Eyes -->
+  <ellipse cx="85" cy="80" rx="5" ry="6" fill="#18181b"/>
+  <ellipse cx="115" cy="80" rx="5" ry="6" fill="#18181b"/>
+  <circle cx="83" cy="78" r="2" fill="#ffffff"/>
+  <circle cx="113" cy="78" r="2" fill="#ffffff"/>
+  <!-- Party Hat -->
+  <polygon points="100,18 82,52 118,52" fill="#facc15" stroke="#ca8a04" stroke-width="2"/>
+  <circle cx="100" cy="16" r="5" fill="#ec4899"/>
+</svg>

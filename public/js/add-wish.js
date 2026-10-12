@@ -1,76 +1,75 @@
 /**
- * Family Secret Wish Scroll Script
+ * Add Wish & Photo Page Logic for Family Members
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const storyId = AppUtils.getQueryParam('id');
+  const partyId = AppUtils.getQueryParam('id');
 
   const kidNameEl = document.getElementById('kidName');
-  const scrollForm = document.getElementById('scrollForm');
+  const wishForm = document.getElementById('wishForm');
   const senderNameInput = document.getElementById('senderName');
   const relationInput = document.getElementById('relation');
-  const messageInput = document.getElementById('messageText');
+  const commentInput = document.getElementById('commentText');
+  const quickWishesWrap = document.getElementById('quickWishesWrap');
   const photoInput = document.getElementById('photoInput');
   const openCameraBtn = document.getElementById('openCameraBtn');
   const cameraBox = document.getElementById('cameraBox');
   const cameraVideo = document.getElementById('cameraVideo');
   const snapBtn = document.getElementById('snapBtn');
   const previewPhoto = document.getElementById('previewPhoto');
-  const submitScrollBtn = document.getElementById('submitScrollBtn');
-  const quickWishesContainer = document.getElementById('quickWishesContainer');
+  const submitWishBtn = document.getElementById('submitWishBtn');
+
   const successModal = document.getElementById('successModal');
-  const viewStoryBtn = document.getElementById('viewStoryBtn');
+  const viewReelBtn = document.getElementById('viewReelBtn');
 
   let cameraStream = null;
   let photoBase64 = '';
 
-  if (!storyId) {
+  if (!partyId) {
     document.body.innerHTML = `
       <div style="text-align: center; padding: 60px 20px;">
-        <h2>⚠️ Birthday Storybook Link Missing</h2>
-        <p style="color: #64748b; margin: 16px 0;">Kripya WhatsApp par bheja gaya link open karein.</p>
+        <h2>⚠️ Birthday Link Not Found</h2>
+        <p style="color: #64748b; margin: 16px 0;">Kripya WhatsApp par bheja gaya link open karein ya naya room banayein.</p>
         <a href="/" class="btn btn-primary">🏠 Go to Home</a>
       </div>
     `;
     return;
   }
 
-  // 1. Fetch Story Info
-  fetch(`/api/stories/${storyId}`)
+  // 1. Fetch Party Details
+  fetch(`/api/parties/${partyId}`)
     .then((r) => {
-      if (!r.ok) throw new Error('Not found');
+      if (!r.ok) throw new Error('Party not found');
       return r.json();
     })
     .then((data) => {
-      if (data.story && kidNameEl) {
-        kidNameEl.textContent = data.story.kidName;
+      if (data.party && kidNameEl) {
+        kidNameEl.textContent = data.party.kidName;
       }
     })
     .catch((err) => {
-      console.warn('Story fetch failed', err);
+      console.warn('Error loading party info', err);
     });
 
-  // 2. Quick wishes
+  // 2. Quick wishes suggestions
   const quickWishes = [
-    'Happy Birthday champ! Hamesha muskurate raho aur unche udo! 🦸🎂',
-    'May God bless you with infinite happiness, good health & superpowers! ✨🎈',
-    'Party hard superstar! Cake mein mera sabse bada slice rakhna! 🍰😋',
-    'Tu hamare parivar ki shaan hai beta! Lots of love and blessings! ❤️🎉',
+    'Happy Birthday champ! Hamesha muskurate raho aur khub aage badho! ❤️🎉',
+    'May God bless you with infinite happiness, health and success! ✨🎈',
+    'Happy Birthday superstar! Tu hamare parivar ki shaan hai! 🎂🍫',
+    'Party hard sweetheart! Cake me mera sabse bada slice rakhna! 🍰😋',
   ];
 
-  if (quickWishesContainer) {
+  if (quickWishesWrap) {
     quickWishes.forEach((w) => {
       const chip = document.createElement('button');
       chip.type = 'button';
-      chip.className = 'btn btn-secondary';
-      chip.style.fontSize = '0.84rem';
-      chip.style.padding = '6px 12px';
+      chip.className = 'quick-wish-chip';
       chip.textContent = w;
       chip.addEventListener('click', () => {
-        SoundEngine.click();
-        messageInput.value = w;
+        PartyBeats.init();
+        commentInput.value = w;
       });
-      quickWishesContainer.appendChild(chip);
+      quickWishesWrap.appendChild(chip);
     });
   }
 
@@ -83,16 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.onload = (event) => {
       photoBase64 = event.target.result;
       previewPhoto.src = photoBase64;
-      previewPhoto.style.display = 'block';
-      SoundEngine.magicSparkle();
-      AppUtils.showToast('Photo added! 📸');
+      AppUtils.showToast('Photo selected! Looking great! 📸');
     };
     reader.readAsDataURL(file);
   });
 
   // 4. Camera Selfie
   openCameraBtn.addEventListener('click', async () => {
-    SoundEngine.click();
     if (cameraStream) {
       stopCamera();
       return;
@@ -113,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   snapBtn.addEventListener('click', () => {
     if (!cameraStream) return;
-    SoundEngine.magicSparkle();
 
     const canvas = document.createElement('canvas');
     canvas.width = cameraVideo.videoWidth || 300;
@@ -123,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     photoBase64 = canvas.toDataURL('image/png');
     previewPhoto.src = photoBase64;
-    previewPhoto.style.display = 'block';
     stopCamera();
     AppUtils.showToast('Selfie captured! 📸');
   });
@@ -134,13 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
       cameraStream = null;
     }
     cameraBox.style.display = 'none';
-    openCameraBtn.textContent = '📸 Open Camera';
+    openCameraBtn.textContent = '📸 Camera';
   }
 
-  // 5. Submit Scroll
-  scrollForm.addEventListener('submit', async (e) => {
+  // 5. Submit Wish
+  wishForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    SoundEngine.init();
 
     const senderName = senderNameInput.value.trim();
     if (!senderName) {
@@ -149,19 +142,18 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    submitScrollBtn.disabled = true;
-    submitScrollBtn.innerHTML = '✨ Sealing Magic Scroll...';
+    submitWishBtn.disabled = true;
+    submitWishBtn.innerHTML = '✨ Adding to Video Reel...';
 
     const payload = {
       senderName,
       relation: relationInput.value.trim() || 'Family',
-      message: messageInput.value.trim() || 'Happy Birthday!',
-      gemColor: document.querySelector('input[name="gemColor"]:checked')?.value || '#ec4899',
+      comment: commentInput.value.trim() || 'Happy Birthday champ! Lots of love and blessings! ❤️🎉',
       photoBase64,
     };
 
     try {
-      const res = await fetch(`/api/stories/${storyId}/scrolls`, {
+      const res = await fetch(`/api/parties/${partyId}/wishes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -169,23 +161,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const data = await res.json();
       if (data.success) {
-        SoundEngine.heroFanfare();
+        PartyBeats.partyHorn();
         AppUtils.showerConfetti();
         successModal.style.display = 'flex';
 
-        viewStoryBtn.onclick = () => {
-          window.location.href = `/story?id=${storyId}`;
+        viewReelBtn.onclick = () => {
+          window.location.href = `/reel?id=${partyId}`;
         };
       } else {
-        AppUtils.showToast(data.error || 'Failed to submit scroll');
-        submitScrollBtn.disabled = false;
-        submitScrollBtn.innerHTML = '📜 Send Secret Wish Scroll!';
+        AppUtils.showToast(data.error || 'Failed to submit wish');
+        submitWishBtn.disabled = false;
+        submitWishBtn.innerHTML = '💌 Add My Photo & Wish to Reel!';
       }
     } catch (err) {
       console.error(err);
-      AppUtils.showToast('Network error while submitting scroll.');
-      submitScrollBtn.disabled = false;
-      submitScrollBtn.innerHTML = '📜 Send Secret Wish Scroll!';
+      AppUtils.showToast('Network error while adding wish.');
+      submitWishBtn.disabled = false;
+      submitWishBtn.innerHTML = '💌 Add My Photo & Wish to Reel!';
     }
   });
 });

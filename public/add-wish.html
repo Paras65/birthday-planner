@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Photo & Wish to Birthday Reel | ToonWish</title>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/wish.css" />
+  </head>
+  <body>
+    <div class="app-container" style="max-width: 600px;">
+      <!-- Top Nav -->
+      <nav class="app-nav">
+        <a href="/" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+          🏠 Back to Home
+        </a>
+        <div class="nav-brand" style="font-size: 1.15rem;">
+          <span>💌 Family Wish</span>
+        </div>
+      </nav>
+
+      <!-- Main Card -->
+      <main class="app-card">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <span style="font-size: 3rem; display: block; margin-bottom: 6px;">🎂📸</span>
+          <h1 style="font-size: 1.8rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+            <span id="kidName">Hero</span> Ki Birthday Reel!
+          </h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Apni photo aur pyara sa aashirwaad/comment bhejein — yeh seedha WhatsApp video reel mein shamil hoga!
+          </p>
+        </div>
+
+        <form id="wishForm">
+          <div class="input-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="senderName">Aapka Naam *</label>
+              <input type="text" id="senderName" class="form-input" placeholder="e.g. Rohan, Sunita, Pinky" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="relation">Rishta / Relation</label>
+              <input type="text" id="relation" class="form-input" placeholder="e.g. Chacha, Dadi, Bua, Mama, Friend" />
+            </div>
+          </div>
+
+          <!-- Birthday Wish Comment -->
+          <div class="form-group">
+            <label class="form-label" for="commentText">💌 Birthday Message / Aashirwaad</label>
+            <textarea id="commentText" class="form-textarea" rows="3" placeholder="Apna pyara sa message likhein..."></textarea>
+
+            <div style="margin-top: 8px;">
+              <span style="font-size: 0.8rem; font-weight: 800; color: #64748b;">Quick ideas (tap to use):</span>
+              <div id="quickWishesWrap" class="quick-wishes-wrap">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Photo Upload & Camera -->
+          <div class="form-group">
+            <label class="form-label">📸 Apni Photo / Selfie</label>
+            <div class="photo-uploader-box">
+              <div class="preview-avatar-circle">
+                <img id="previewPhoto" src="/assets/default-user.svg" alt="Preview" />
+              </div>
+              <div style="flex: 1;">
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">
+                  Photo video reel mein aapke comment ke sath dikhegi:
+                </p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <label class="btn btn-primary" style="font-size: 0.85rem; padding: 6px 14px; cursor: pointer;">
+                    📁 Upload Photo
+                    <input type="file" id="photoInput" accept="image/*" style="display: none;" />
+                  </label>
+                  <button type="button" id="openCameraBtn" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+                    📸 Camera
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Camera box -->
+            <div id="cameraBox" class="camera-box">
+              <video id="cameraVideo" autoplay playsinline></video>
+              <div style="margin-top: 8px;">
+                <button type="button" id="snapBtn" class="btn btn-gold" style="font-size: 0.85rem; padding: 6px 12px;">
+                  ✨ Snap Photo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div style="margin-top: 26px;">
+            <button type="submit" id="submitWishBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.15rem;">
+              💌 Add My Photo & Wish to Reel!
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal-overlay">
+      <div class="modal-card">
+        <div style="font-size: 3.5rem; margin-bottom: 12px;">🎉✨</div>
+        <h2 style="color: var(--primary); font-size: 1.7rem; margin-bottom: 6px;">
+          Wish Shamil Ho Gayi! ❤️
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 22px;">
+          Aapki photo aur comment birthday video reel mein successfully add ho chuki hai!
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button id="viewReelBtn" class="btn btn-primary" style="font-size: 1.05rem; padding: 12px;">
+            🎬 Watch Full 9:16 Video Reel
+          </button>
+          <a href="/" class="btn btn-secondary">
+            🏠 Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/common.js"></script>
+    <script src="/js/party-beats.js"></script>
+    <script src="/js/add-wish.js"></script>
+  </body>
+</html>

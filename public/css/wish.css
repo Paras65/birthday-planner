@@ -1,0 +1,260 @@
+/* Dashboard & Wish Submission Styles */
+
+.hero-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef08a;
+  color: #854d0e;
+  font-weight: 800;
+  font-size: 0.88rem;
+  padding: 6px 18px;
+  border-radius: var(--radius-full);
+  margin-bottom: 14px;
+}
+
+.hero-header h1 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.hero-header h1 span.gradient-text {
+  background: linear-gradient(135deg, #f43f5e 0%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-header p {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Card Form */
+.app-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  margin-bottom: 40px;
+}
+
+@media (max-width: 600px) {
+  .app-card {
+    padding: 20px;
+  }
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s;
+  background: #f8fafc;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12);
+}
+
+.input-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .input-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Photo Preview Box */
+.photo-uploader-box {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 2px dashed #cbd5e1;
+}
+
+.preview-avatar-circle {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 3px solid #f43f5e;
+  overflow: hidden;
+  background: #fecdd3;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+}
+
+.preview-avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Quick Wishes Chips */
+.quick-wishes-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.quick-wish-chip {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-wish-chip:hover {
+  background: #fef2f2;
+  border-color: #f43f5e;
+  color: #f43f5e;
+}
+
+/* Camera Preview Box */
+.camera-box {
+  display: none;
+  background: #0f172a;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  text-align: center;
+  margin-top: 14px;
+}
+
+.camera-box video {
+  width: 100%;
+  max-width: 280px;
+  border-radius: var(--radius-sm);
+  background: #000000;
+}
+
+/* Reels Gallery Section */
+.gallery-section h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #0f172a;
+}
+
+.reels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.party-reel-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  border: 1.5px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.party-reel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(244, 63, 94, 0.16);
+  border-color: #fecdd3;
+}
+
+.reel-card-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.reel-card-photo {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #f59e0b;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.25);
+}
+
+.reel-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reel-card-info h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.reel-card-info p {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.reel-card-stats {
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: #475569;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+.reel-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.reel-card-actions .btn {
+  flex: 1;
+  font-size: 0.88rem;
+  padding: 8px 12px;
+}
